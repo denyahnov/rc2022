@@ -13,7 +13,7 @@ print("ev3dev2 Imported")
 # Other Imports
 from threading import Thread
 from time import sleep
-from .utils import *
+from ..utils import *
 print("utils Imported")
 
 # Initialize Motors
