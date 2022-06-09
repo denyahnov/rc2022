@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Import EV3DEV
+# Import ev3dev2
 from ev3dev2.button import *
 from ev3dev2.console import *
 from ev3dev2.motor import *
@@ -10,6 +10,7 @@ from ev3dev2.display import *
 from ev3dev2.leds import *
 print("ev3dev2 Imported")
 
+# Other Imports
 import threading
 import ctypes
 from time import sleep
@@ -27,6 +28,12 @@ irFront = Sensor(INPUT_1, driver_name = "ht-nxt-ir-seek-v2")
 irBack = Sensor(INPUT_2, driver_name = "ht-nxt-ir-seek-v2")
 compass = Sensor(INPUT_3, driver_name = "ht-nxt-compass")
 ultrasonic = UltrasonicSensor(INPUT_4)
+
+# Set Sensor Modes
+irFront.mode = "AC-ALL"
+irBack.mode = "AC-ALL"
+compass.mode = "COMPASS"
+ultrasonic.mode = "US-DIST-CM"
 
 # Initialize Brick Functions
 buttons = Button()

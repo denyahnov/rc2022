@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import ev3dev2
 import time
 
 from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, SpeedPercent

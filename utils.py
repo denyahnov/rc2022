@@ -27,7 +27,10 @@ def ballPossesion(centerStrength):
     else:
         return False
 
-# Get Motor Direction
+# 8-Direction Motor Movement
+#  1  2  3
+#  8  0  4
+#  7  6  5
 def motorDirection(direction):
     match direction:
         case 0:
@@ -49,6 +52,7 @@ def motorDirection(direction):
         case 8:
             return -1,1,-1,1
 
+# Points towards 'North'
 def pointForward(angle):
     if 2 < angle < 181:
         return 7 + (round((angle+2)/15))
@@ -57,6 +61,7 @@ def pointForward(angle):
     else:
         return 0
 
+# Get robot position on field
 def getPos(distance,fieldWidth):
     if distance > (fieldWidth+80):
         return 1
@@ -65,6 +70,7 @@ def getPos(distance,fieldWidth):
     else:
         return 0
 
+# Convert IR Inputs to a Pos Value and Strength Value
 def irToPos(fp,bp,fs,bs):
     if fp > 0:
         match fp:
@@ -91,6 +97,7 @@ def irToPos(fp,bp,fs,bs):
     else:
         return 0,0
 
+# Convert IR position to Motor Direction
 def moveBall(pos,strength):
     match pos:
         case 0:
@@ -128,6 +135,7 @@ def moveBall(pos,strength):
         case _:
             return 0
 
+# Curve towards Goal
 def curve(dist,field):
     p=getPos(dist,field)
     match p:
