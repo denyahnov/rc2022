@@ -1,4 +1,4 @@
-#!/usr/bin/env pybricks-micropython
+#!/usr/bin/env python3
 import threading
 import time
 
@@ -8,6 +8,7 @@ import time
 # Import EV3DEV
 from ev3dev2.button import *
 from ev3dev2.console import *
+from ev3dev2.display import *
 from ev3dev2.fonts import *
 from ev3dev2.led import *
 from ev3dev2.motor import *
@@ -16,11 +17,10 @@ from ev3dev2.power import *
 from ev3dev2.sensor import *
 from ev3dev2.sensor.lego import *
 from ev3dev2.sound import *
-
 print("ev3dev imported")
 
 # Import Utils
-from utils import *
+from ..utils import *
 print("utils imported")
 
 # Initialize Bluetooth Connection
@@ -39,8 +39,7 @@ global backVal
 global centerStrength
 global frontProximity
 global backProximity
-global state
-global bluetoothWorking
+global ended
 
 # Customization
 robotSize = 180    # Diameter (mm)
@@ -80,8 +79,9 @@ compass = Sensor(INPUT_3, driver_name = "ht-nxt-compass")
 ultrasonic = UltrasonicSensor(INPUT_4)
 
 # Initialize Brick Functions
-sound = Sound()
+#sound = Sound()
 buttons = Button()
+screen = Display()
 leds = Leds()
 
 # Set Sensor Modes
@@ -89,6 +89,24 @@ irFront.mode = "AC-ALL"
 irBack.mode = "AC-ALL"
 compass.mode = "COMPASS"
 ultrasonic.mode = "US-DIST-CM"
+
+# Get Screen Size
+width = screen.xres
+height = screen.yres
+
+# Change Lighting/Sound
+def brickMode(mode):
+    if mode == 'Running':
+        leds.set_color('LEFT', 'GREEN')
+        leds.set_color('RIGHT', 'GREEN')
+        #sound(700,0.5,play_type=sound.PLAY_NO_WAIT_FOR_COMPLETE)
+    elif mode == 'Paused':
+        leds.set_color('LEFT', 'AMBER')
+        leds.set_color('RIGHT', 'AMBER')
+        #sound(500,0.5,play_type=sound.PLAY_NO_WAIT_FOR_COMPLETE)
+    elif mode == 'Reset':
+        leds.set_color('LEFT', 'GREEN')
+        leds.set_color('RIGHT', 'GREEN')
 
 # Create 8-Direction Movement + Turning
 def direct(direction,speed,leftDrift,rightDrift):
@@ -100,64 +118,64 @@ def direct(direction,speed,leftDrift,rightDrift):
         bottomLeft.stop()
     if (direction == 1):
         # Top Left
-        topRight.on(SpeedPercent((speed*1)+leftDrift))
+        topRight.on(SpeedPercent((speed*-1)+leftDrift))
         bottomRight.on(SpeedPercent(0+leftDrift))
         topLeft.on(SpeedPercent(0+rightDrift))
-        bottomLeft.on(SpeedPercent((speed*-1)+rightDrift))
+        bottomLeft.on(SpeedPercent((speed*1)+rightDrift))
     if (direction == 2):
         # Forward
-        topRight.on(SpeedPercent((speed*1)+leftDrift))
-        bottomRight.on(SpeedPercent((speed*1)+leftDrift))
-        topLeft.on(SpeedPercent((speed*-1)+rightDrift))
-        bottomLeft.on(SpeedPercent((speed*-1)+rightDrift))
+        topRight.on(SpeedPercent((speed*-1)+leftDrift))
+        bottomRight.on(SpeedPercent((speed*-1)+leftDrift))
+        topLeft.on(SpeedPercent((speed*1)+rightDrift))
+        bottomLeft.on(SpeedPercent((speed*1)+rightDrift))
     if (direction == 3):
         # Top Right
 	    topRight.on(SpeedPercent(0+leftDrift))
-	    bottomRight.on(SpeedPercent((speed*1)+leftDrift))
-	    topLeft.on(SpeedPercent((speed*-1)+rightDrift))
+	    bottomRight.on(SpeedPercent((speed*-1)+leftDrift))
+	    topLeft.on(SpeedPercent((speed*1)+rightDrift))
 	    bottomLeft.on(SpeedPercent(0+rightDrift))
     if (direction == 4):
         # Right
-	    topRight.on(SpeedPercent((speed*-1)+leftDrift))
-	    bottomRight.on(SpeedPercent((speed*1)+leftDrift))
-	    topLeft.on(SpeedPercent((speed*-1)+rightDrift))
-	    bottomLeft.on(SpeedPercent((speed*1)+rightDrift))
-    if (direction == 5):
-        # Bottom Right
-	    topRight.on(SpeedPercent((speed*-1)+leftDrift))
-	    bottomRight.on(SpeedPercent(0+leftDrift))
-	    topLeft.on(SpeedPercent(0+rightDrift))
-	    bottomLeft.on(SpeedPercent((speed*1)+rightDrift))
-    if (direction == 6):
-        # Backwards
-	    topRight.on(SpeedPercent((speed*-1)+leftDrift))
-	    bottomRight.on(SpeedPercent((speed*-1)+leftDrift))
-	    topLeft.on(SpeedPercent((speed*1)+rightDrift))
-	    bottomLeft.on(SpeedPercent((speed*1)+rightDrift))
-    if (direction == 7):
-        # Bottom Left
-	    topRight.on(SpeedPercent(0+leftDrift))
-	    bottomRight.on(SpeedPercent((speed*-1)+leftDrift))
-	    topLeft.on(SpeedPercent((speed*1)+rightDrift))
-	    bottomLeft.on(SpeedPercent(0+rightDrift))
-    if (direction == 8):
-        # Left
 	    topRight.on(SpeedPercent((speed*1)+leftDrift))
 	    bottomRight.on(SpeedPercent((speed*-1)+leftDrift))
 	    topLeft.on(SpeedPercent((speed*1)+rightDrift))
 	    bottomLeft.on(SpeedPercent((speed*-1)+rightDrift))
-    if (direction == 9):
-        # Spin Right
-	    topRight.on(SpeedPercent((speed*-1)+leftDrift))
-	    bottomRight.on(SpeedPercent((speed*-1)+leftDrift))
+    if (direction == 5):
+        # Bottom Right
+	    topRight.on(SpeedPercent((speed*1)+leftDrift))
+	    bottomRight.on(SpeedPercent(0+leftDrift))
+	    topLeft.on(SpeedPercent(0+rightDrift))
+	    bottomLeft.on(SpeedPercent((speed*-1)+rightDrift))
+    if (direction == 6):
+        # Backwards
+	    topRight.on(SpeedPercent((speed*1)+leftDrift))
+	    bottomRight.on(SpeedPercent((speed*1)+leftDrift))
 	    topLeft.on(SpeedPercent((speed*-1)+rightDrift))
 	    bottomLeft.on(SpeedPercent((speed*-1)+rightDrift))
+    if (direction == 7):
+        # Bottom Left
+	    topRight.on(SpeedPercent(0+leftDrift))
+	    bottomRight.on(SpeedPercent((speed*1)+leftDrift))
+	    topLeft.on(SpeedPercent((speed*-1)+rightDrift))
+	    bottomLeft.on(SpeedPercent(0+rightDrift))
+    if (direction == 8):
+        # Left
+	    topRight.on(SpeedPercent((speed*-1)+leftDrift))
+	    bottomRight.on(SpeedPercent((speed*1)+leftDrift))
+	    topLeft.on(SpeedPercent((speed*-1)+rightDrift))
+	    bottomLeft.on(SpeedPercent((speed*1)+rightDrift))
+    if (direction == 9):
+        # Spin Right
+	    topRight.on(SpeedPercent((speed*1)+leftDrift))
+	    bottomRight.on(SpeedPercent((speed*1)+leftDrift))
+	    topLeft.on(SpeedPercent((speed*1)+rightDrift))
+	    bottomLeft.on(SpeedPercent((speed*1)+rightDrift))
     if (direction == 10):
         # Spin Left
-        topRight.on(SpeedPercent((speed*1)+leftDrift))
-        bottomRight.on(SpeedPercent((speed*1)+leftDrift))
-        topLeft.on(SpeedPercent((speed*1)+rightDrift))
-        bottomLeft.on(SpeedPercent((speed*1)+rightDrift))
+        topRight.on(SpeedPercent((speed*-1)+leftDrift))
+        bottomRight.on(SpeedPercent((speed*-1)+leftDrift))
+        topLeft.on(SpeedPercent((speed*-1)+rightDrift))
+        bottomLeft.on(SpeedPercent((speed*-1)+rightDrift))
     if (direction == 11):
         # Coast Motors
         topRight.off(brake=False)
@@ -299,67 +317,19 @@ def goToBall():
                     var1 = 8
             else:
                 var1 = 6
-        elif 2 < backVal < 4:   # Back Right 
+        elif 0 < backVal < 4:   # Back Right 
             if backProximity > 110: # Ball is Close
                 var1 = 7
             else:
                 var1 = 6
-        elif 2 < backVal < 4:   # Back Left 
+        elif 6 < backVal < 10:   # Back Left 
             if backProximity > 110: # Ball is Close
                 var1 = 5
             else:
                 var1 = 6
     else:                       # Can't Find Ball
-        centerRobot()
-
-# Play Defence and Stay in Goal
-def goalie():
-    pass
-
-# Thread for Bluetooth Communication
-def bluetooth(brickType):
-    global frontVal
-    global backVal
-    global state
-    global centerStrength
-    global bluetoothWorking
-
-    bluetoothWorking = False
-
-    try:
-        if brickType == 'client':
-            brick = BluetoothMailboxServer()
-            brick.wait_for_connection()
-        elif brickType == 'server':
-            brick = BluetoothMailboxClient()
-            brick.connect('ev3dev')
-
-        bluetoothWorking = True
-
-        robot1 = NumericMailbox('ROBOT1', brick)
-        robot2 = NumericMailbox('ROBOT2', brick)
-
-        while not ended:
-            # Read Teammate State
-            teammate = robot2.read()
-
-            # Get Current Robot State
-            if ballPossesion(centerStrength):
-                state = 1 # Has Ball
-            elif teammate == 1:
-                state = 2 # Teammate has Ball
-            elif frontVal != 0 and backVal != 0:
-                state = 3 # Neither have Ball
-            else:
-                state = 0 # Cant Find Ball 
-
-            # Update State
-            robot1.send(state)
-
-        brick.close()
-    except:
-        print("Could not connect Bluetooth")
-        bluetoothWorking = False    
+        var1=0
+        #centerRobot()
 
 # Thread for Sensor Values
 def updateSensors():
@@ -371,6 +341,7 @@ def updateSensors():
     global centerStrength
     global frontProximity
     global backProximity
+    global ended
 
     print("Updating Sensors!")
 
@@ -386,6 +357,48 @@ def updateSensors():
         backProximity = max([irBack.value(1),irBack.value(2),irBack.value(3),irBack.value(4),irBack.value(5)])
         backVal = irBack.value(0)
         centerStrength = irFront.value(3)
+       
+# Thread for Display
+def updateScreen():
+    global var1
+    global var2
+    global oldDistance
+    global newDistance
+    global currentAngle
+    global frontVal
+    global backVal
+    global centerStrength
+    global ended
+
+    print("Updating Screen!")
+
+    # Font Variables
+    fontsize = 12
+
+    # Screen Cennter Position
+    centerX = int(width)/2
+    centerY = int(height)/2
+
+    while not ended:
+        # Update UI
+        screen.clear()
+        screen.text_pixels("Direction: " + str(var1),False,0,0,'Blue',load('helvB12'))
+        screen.text_pixels("Motor Speed: " + str(var2),False,0,fontsize,'Blue',load('helvB12'))
+        screen.text_pixels("IR Values: " + str(frontVal) + "," + str(backVal),False,0,fontsize*2,'Blue',load('helvB12'))
+        screen.text_pixels("IR Proximity: " + str(centerStrength),False,0,fontsize*3,'Blue',load('helvB12'))
+        screen.text_pixels("CurrentAngle: " + str(currentAngle),False,0,fontsize*4,'Blue',load('helvB12'))
+        screen.text_pixels("CenterAngle: " + str(centerAngle),False,0,fontsize*5,'Blue',load('helvB12'))
+        screen.text_pixels("WallDistance: " + str(newDistance),False,0,fontsize*6,'Blue',load('helvB12'))
+        screen.text_pixels("OldDistances:",False,0,fontsize*7,'Blue',load('helvB12'))
+        screen.text_pixels(str(oldDistance),False,0,fontsize*8,'Blue',load('helvB12'))
+        
+        if run == False:
+            # If Paused
+            screen.text_pixels("Paused",False,0,fontsize*9,'Blue',load('helvBO24'))
+
+        # Update Screen every 100 ms
+        screen.update()
+        time.sleep(0.1)
 
 # Reset Values
 centerAngle = compass.value(0)
@@ -401,69 +414,46 @@ ended = False
 leds.set_color('LEFT', 'RED')
 leds.set_color('RIGHT', 'RED')
 
-# Start Bluetooth Thread
-bluetoothComms=threading.Thread(target=bluetooth('client'))
-#bluetoothComms=threading.Thread(target=bluetooth('server'))
-bluetoothComms.start()
-
 # Start Sensor Thread
 updateValues=threading.Thread(target=updateSensors)
 updateValues.start()
 
+# Start Screen Thread
+updateDisplay=threading.Thread(target=updateScreen)
+updateDisplay.start()
+
 print("Ready!")
 
-# Main Loop
-while True:
-    # Close Program
-    if buttons.backspace:
-        # Coast Motors and Stop Thread
-        print("Exiting...")
-        direct(11,0,0,0)
-        ended = True
-        leds.set_color('LEFT', 'GREEN')
-        leds.set_color('RIGHT', 'GREEN')
-        time.sleep(0.1)
-        break
+try:
+    # Main Loop
+    while True:
+        # Close Program
+        if buttons.backspace:
+            # Coast Motors and Stop Thread
+            print("Exiting...")
+            direct(11,0,0,0)
+            ended = True
+            brickMode('Reset')
+            time.sleep(0.1)
+            break
 
-    # Pause Program
-    if buttons.left:
-        if run == True:
-            run = False
-            leds.set_color('LEFT', 'AMBER')
-            leds.set_color('RIGHT', 'AMBER')
-            sound(500,0.5,play_type=sound.PLAY_NO_WAIT_FOR_COMPLETE)
-            print("Paused")
-        else:
-            run = True
-            leds.set_color('LEFT', 'GREEN')
-            leds.set_color('RIGHT', 'GREEN')
-            sound(700,0.5,play_type=sound.PLAY_NO_WAIT_FOR_COMPLETE)
-            print("Started")
-        direct(11,0,0,0)
-        while buttons.left:
-            time.sleep(0.01)   
+        # Pause Button Pressed
+        if buttons.left:
+            if run == True:
+                run = False
+                brickMode('Paused')
+                print("Paused")
+            else:
+                run = True
+                brickMode('Running')
+                print("Started")
+            direct(11,0,0,0)
+            while buttons.left:
+                time.sleep(0.01)   
 
-    # If Running
-    if run == True: 
-        # Run Functions
-        if bluetoothWorking:
-            if state == 1: # Has Ball
-                var2 = 80
-                #curve()
-                var3 = 0
-                var4 = 0
-                turnStraight()
-            if state == 2: # Goalie
-                goalie()
-            elif state == 3: # Attack Ball
-                # Neutral Speed
-                var2 = 50
-                turnStraight()
-        
-            if state != 2:
-                # Chase Ball
-                goToBall()   
-        else: # Bluetooth Not Working
+        # If Program is Not Paused
+        if run == True:              
+            # Run Functions
             if ballPossesion(centerStrength):
                 var2 = 80
                 #curve()
@@ -474,19 +464,16 @@ while True:
                 # Neutral Speed
                 var2 = 50
                 turnStraight()
-       
+
             # Chase Ball
-            goToBall()    
-            
-        # Prevent Large Speed
-        if (var2 + var3 + var4) > 100:
-            var2 = 100
-            var3 = 0
-            var4 = 0
-
-        direct(var1,var2,var3,var4)
-
-    # If Paused
-    else:
-        # Coast Motors
-        direct(11,0,0,0)
+            goToBall()
+        
+            direct(var1,var2,var3,var4)
+        # If Paused
+        else:
+            # Coast Motors
+            direct(11,0,0,0)
+except:
+    ended=False
+    direct(11,0,0,0)
+    time.sleep(0.1)

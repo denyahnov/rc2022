@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from ev3dev2.sensor import INPUT_1, INPUT_2, Sensor
-from utils import irToPos
+from ..utils import irToPos
 
 # Initialize Sensors
 irFront = Sensor(INPUT_1, driver_name = "ht-nxt-ir-seek-v2")
