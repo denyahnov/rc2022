@@ -45,7 +45,7 @@ speed=30
 goal=compass.value()
 
 class ultrasonicThread():
-    distace=ultrasonic.value()
+    distance=ultrasonic.value()
     running=True
     def run(self):
         while self.running:
@@ -65,7 +65,7 @@ thread = Thread(target=ultrasonicThread)
 thread.start()
 
 try:
-    while not buttons.right.pressed:
+    while not buttons.right:
         sleep(0.05)
     while True:
         fp=irFront.value(0) # Front Pos
@@ -86,10 +86,10 @@ try:
         x=drift+c
 
         # Calc Motor Speeds
-        a=(motorDirection(direction)[0]*speed)+x
-        b=(motorDirection(direction)[1]*speed)+x
-        c=(motorDirection(direction)[2]*speed)+x
-        d=(motorDirection(direction)[3]*speed)+x
+        a=(motorDirection(direction)[0]*speed)
+        b=(motorDirection(direction)[1]*speed)
+        c=(motorDirection(direction)[2]*speed)
+        d=(motorDirection(direction)[3]*speed)s
 
         # Move Motors
         topRight.on(SpeedPercent(a))
@@ -97,7 +97,7 @@ try:
         topLeft.on(SpeedPercent(c))
         bottomLeft.on(SpeedPercent(d))
 except:
-    pass
+    print("Ended")
 coast() # Stop Motors
 ultrasonicThread.running = False # Kill Thread
 sleep(1)
