@@ -11,9 +11,9 @@ from ev3dev2.led import *
 print("ev3dev2 Imported")
 
 # Other Imports
+from utils import *
 from threading import Thread
 from time import sleep
-from ..utils import *
 print("utils Imported")
 
 # Initialize Motors
@@ -44,10 +44,9 @@ fieldWidth=(1800)/2
 speed=30
 goal=compass.value()
 
-class ultrasonicThread(Thread):
-    def __init__(self):
-        self.distace=ultrasonic.value()
-        self.running=True
+class ultrasonicThread():
+    distace=ultrasonic.value()
+    running=True
     def run(self):
         while self.running:
             self.distance=ultrasonic.value()
@@ -62,7 +61,7 @@ def coast():
     bottomLeft.off(brake=False)
     
 # Start Thread
-thread = ultrasonicThread('Thread 1')
+thread = Thread(target=ultrasonicThread)
 thread.start()
 
 try:
