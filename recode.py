@@ -41,7 +41,7 @@ leds = Leds()
 
 # Variables
 fieldWidth=(1800)/2
-speed=30
+speed=70
 goal=compass.value()
 
 class ultrasonicThread():
@@ -68,6 +68,8 @@ try:
     while not buttons.right:
         sleep(0.05)
     while True:
+        if buttons.backspace or buttons.left:
+            break
         fp=irFront.value(0) # Front Pos
         bp=irBack.value(0) # Back Pos
         fs=[irFront.value(1),irFront.value(2),irFront.value(3),irFront.value(4),irFront.value(5)] # Front Strength
@@ -79,17 +81,16 @@ try:
 
         position=irToPos(fp,bp,fs,bs)[0] # Ball Position
         strength=irToPos(fp,bp,fs,bs)[1] # Ball Strength
-        direction=moveBall(position,strength) # Decide Motor Direction
+        direction=moveBall(position,strength,dist,fieldWidth) # Decide Motor Direction
         drift=pointForward(ang) # Point 'North'
         if ballPossesion(prox): c=curve(dist,fieldWidth) # Curve Towards Goal
         else: c=0
-        x=drift+c
 
         # Calc Motor Speeds
-        a=(motorDirection(direction)[0]*speed)
-        b=(motorDirection(direction)[1]*speed)
-        c=(motorDirection(direction)[2]*speed)
-        d=(motorDirection(direction)[3]*speed)s
+        a=(motorDirection(direction)[0]*speed) + drift
+        b=(motorDirection(direction)[1]*speed) + drift
+        c=(motorDirection(direction)[2]*speed) + drift
+        d=(motorDirection(direction)[3]*speed) + drift
 
         # Move Motors
         topRight.on(SpeedPercent(a))
@@ -97,7 +98,11 @@ try:
         topLeft.on(SpeedPercent(c))
         bottomLeft.on(SpeedPercent(d))
 except:
-    print("Ended")
+    print("Error")
+    coast() # Stop Motors
+    ultrasonicThread.running = False # Kill Thread
+    sleep(1)
+print("Ended")
 coast() # Stop Motors
 ultrasonicThread.running = False # Kill Thread
 sleep(1)

@@ -54,9 +54,9 @@ def motorDirection(direction):
 # Points towards 'North'
 def pointForward(angle):
     if 2 < angle < 181:
-        return 7 + (round((angle+2)/15))
+        return (round((angle+2)/7.5))*-1
     elif 358 > angle > 180:
-        return (20 - (round((angle+2)/30)))*-1
+        return 25 - (round((angle+2)/15))
     else:
         return 0
 
@@ -71,65 +71,46 @@ def getPos(distance,fieldWidth):
 
 # Convert IR Inputs to a Pos Value and Strength Value
 def irToPos(fp,bp,fs,bs):
-    if fp > 0:
-        if fp == 1: return 1,fs[0]
-        elif fp == 2: return 2,fs[0]
-        elif fp == 3: return 3,fs[1]
-        elif fp == 4: return 4,fs[1]
-        elif fp == 5: return 5,fs[2]
-        elif fp == 6: return 6,fs[3]
-        elif fp == 7: return 7,fs[3]
-        elif fp == 8: return 8,fs[4]
-        elif fp == 9: return 9,fs[4]
-        else: return 0,0
+    if 1 < fp < 9:
+        i=(fp*30)-150
+        if i < 0: i+=360
+        return i,max(fs)
+    elif 1 < bp < 9:
+        i=(bp*30)+30
+        if i < 0: i+=360
+        return i,max(bs)
+    elif fp > 0:
+        i=(fp*30)-150
+        if i < 0: i+=360
+        return i,max(fs)
     elif bp > 0:
-        if bp == 1: return 9,bs[4]
-        elif bp == 2: return 8,bs[4]
-        elif bp == 3: return 7,bs[3]
-        elif bp == 4: return 6,bs[3]
-        elif bp == 5: return 5,bs[2]
-        elif bp == 6: return 4,bs[1]
-        elif bp == 7: return 3,bs[1]
-        elif bp == 8: return 2,bs[0]
-        elif bp == 9: return 1,bs[0]
-        else: return 0,0
+        i=(bp*30)+30
+        if i < 0: i+=360
+        return i,max(bs)
     else:
-        return 0,0
+        return -1,-1
 
 # Convert IR position to Motor Direction
-def moveBall(pos,strength):
-    if pos == 0:
-        return 0
-    elif pos == 1:
-        return 6
-    elif pos == 2:
-        return 6
-    elif pos == 3:
-        if strength > 130:
-            return 7
-        else:
-            return 8
-    elif pos == 4:
-        if strength > 100:
-            return 1
-        else:
-            return 8
-    elif pos == 5:
+def moveBall(pos,strength,dist,fieldWidth):
+    if 314 < pos < 330:
+        return 1
+    elif 329 < pos < 361 or -1 < pos < 30:
         return 2
-    elif pos == 6:
-        if strength > 100:
-            return 3
-        else:
+    elif 29 < pos < 45:
+        return 3
+    elif 44 < pos < 90:
+        return 4
+    elif 89 < pos < 135:
+        return 7
+    elif 134 < pos < 215:
+        if getPos(dist,fieldWidth) == 1:
             return 4
-    elif pos == 7:
-        if strength > 130:
-            return 5
         else:
-            return 4
-    elif pos == 8:
-        return 6
-    elif pos == 9:
-        return 6
+            return 8
+    elif 214 < pos < 270:
+        return 5
+    elif 269 < pos < 315:
+        return 8
     else:
         return 0
 
