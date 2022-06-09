@@ -11,8 +11,7 @@ from ev3dev2.leds import *
 print("ev3dev2 Imported")
 
 # Other Imports
-import threading
-import ctypes
+from threading import Thread
 from time import sleep
 from ..utils import *
 print("utils Imported")
@@ -45,30 +44,16 @@ fieldWidth=(1800)/2
 speed=30
 goal=compass.value()
 
-class ultrasonicThread(threading.Thread):
+class ultrasonicThread(Thread):
     def __init__(self):
-        threading.Thread.__init__(self)
         self.distace=ultrasonic.value()
+        self.running=True
     def run(self):
-        try:
-            while True:
-                self.distance=ultrasonic.value()
-                sleep(0.2)
-        finally:
-            print('Killed Thread')
-    def get_thread_id(self):
-        if hasattr(self, '_thread_id'):
-            return self._thread_id
-        for id, thread in threading._active.items():
-            if thread is self:
-                return id
-    def raise_exception(self):
-        thread_id = self.get_id()
-        res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id,
-              ctypes.py_object(SystemExit))
-        if res > 1:
-            ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
-
+        while self.running:
+            self.distance=ultrasonic.value()
+            sleep(0.2)
+        print("Ended Thread")
+        
 # Coast Motors
 def coast():
     topRight.off(brake=False)
@@ -76,6 +61,7 @@ def coast():
     topLeft.off(brake=False)
     bottomLeft.off(brake=False)
     
+# Start Thread
 thread = ultrasonicThread('Thread 1')
 thread.start()
 
@@ -83,34 +69,36 @@ try:
     while not buttons.right.pressed:
         sleep(0.05)
     while True:
-        fp=irFront.value(0)
-        bp=irBack.value(0)
-        fs=[irFront.value(1),irFront.value(2),irFront.value(3),irFront.value(4),irFront.value(5)]
-        bs=[irBack.value(1),irBack.value(2),irBack.value(3),irBack.value(4),irBack.value(5)]
-        ang=getAngle(compass.value(),goal)
-        dist=ultrasonic.value()
-        usBlocked=robotNotBlocking(dist,ultrasonicThread.distance)
+        fp=irFront.value(0) # Front Pos
+        bp=irBack.value(0) # Back Pos
+        fs=[irFront.value(1),irFront.value(2),irFront.value(3),irFront.value(4),irFront.value(5)] # Front Strength
+        bs=[irBack.value(1),irBack.value(2),irBack.value(3),irBack.value(4),irBack.value(5)] # Back Strength
+        prox=max([irFront.value(3),irBack.value(3)]) # Center Proximity
+        ang=getAngle(compass.value(),goal) # Compass Angle
+        dist=ultrasonic.value() # Ultrasonic Distance
+        usBlocked=robotNotBlocking(dist,ultrasonicThread.distance) # Ultrasonic Blocked by Object
 
-        position=irToPos(fp,bp,fs,bs)[0]
-        strength=irToPos(fp,bp,fs,bs)[1]
-        direction=moveBall(position,strength)
-        drift=pointForward(ang)
-        if ballPossesion(): c=curve(dist,fieldWidth)
+        position=irToPos(fp,bp,fs,bs)[0] # Ball Position
+        strength=irToPos(fp,bp,fs,bs)[1] # Ball Strength
+        direction=moveBall(position,strength) # Decide Motor Direction
+        drift=pointForward(ang) # Point 'North'
+        if ballPossesion(prox): c=curve(dist,fieldWidth) # Curve Towards Goal
         else: c=0
+        x=drift+c
 
-        x=speed+drift+c
+        # Calc Motor Speeds
+        a=(motorDirection(direction)[0]*speed)+x
+        b=(motorDirection(direction)[1]*speed)+x
+        c=(motorDirection(direction)[2]*speed)+x
+        d=(motorDirection(direction)[3]*speed)+x
 
-        a=motorDirection(direction)[0]*x
-        b=motorDirection(direction)[1]*x
-        c=motorDirection(direction)[2]*x
-        d=motorDirection(direction)[3]*x
-
+        # Move Motors
         topRight.on(SpeedPercent(a))
         bottomRight.on(SpeedPercent(b))
         topLeft.on(SpeedPercent(c))
         bottomLeft.on(SpeedPercent(d))
 except:
     pass
-coast()
-thread.raise_exception()
-thread.join()
+coast() # Stop Motors
+ultrasonicThread.running = False # Kill Thread
+sleep(1)
