@@ -23,14 +23,14 @@ bottomLeft = LargeMotor(OUTPUT_D)
 bottomRight = LargeMotor(OUTPUT_B)
 
 # Initialize Sensors
-irFront = Sensor(INPUT_1, driver_name = "ht-nxt-ir-seek-v2")
-irBack = Sensor(INPUT_2, driver_name = "ht-nxt-ir-seek-v2")
+iF = Sensor(INPUT_1, driver_name = "ht-nxt-ir-seek-v2")
+iB = Sensor(INPUT_2, driver_name = "ht-nxt-ir-seek-v2")
 compass = Sensor(INPUT_3, driver_name = "ht-nxt-compass")
 ultrasonic = UltrasonicSensor(INPUT_4)
 
 # Set Sensor Modes
-irFront.mode = "AC-ALL"
-irBack.mode = "AC-ALL"
+iF.mode = "AC-ALL"
+iB.mode = "AC-ALL"
 compass.mode = "COMPASS"
 ultrasonic.mode = "US-DIST-CM"
 
@@ -70,11 +70,11 @@ try:
     while True:
         if buttons.backspace or buttons.left:
             break
-        fp=irFront.value(0) # Front Pos
-        bp=irBack.value(0) # Back Pos
-        fs=[irFront.value(1),irFront.value(2),irFront.value(3),irFront.value(4),irFront.value(5)] # Front Strength
-        bs=[irBack.value(1),irBack.value(2),irBack.value(3),irBack.value(4),irBack.value(5)] # Back Strength
-        prox=max([irFront.value(3),irBack.value(3)]) # Center Proximity
+        fp=iF.value(0) # Front Pos
+        bp=iB.value(0) # Back Pos
+        fs=[iF.value(1),iF.value(2),iF.value(3),iF.value(4),iF.value(5)] # Front Strength
+        bs=[iB.value(1),iB.value(2),iB.value(3),iB.value(4),iB.value(5)] # Back Strength
+        prox=max([iF.value(3),iB.value(3)]) # Center Proximity
         ang=getAngle(compass.value(),goal) # Compass Angle
         dist=ultrasonic.value() # Ultrasonic Distance
         usBlocked=robotNotBlocking(dist,ultrasonicThread.distance) # Ultrasonic Blocked by Object
@@ -93,10 +93,10 @@ try:
         d=(motorDirection(direction)[3]*speed) + drift
 
         # Move Motors
-        topRight.on(SpeedPercent(a))
-        bottomRight.on(SpeedPercent(b))
-        topLeft.on(SpeedPercent(c))
-        bottomLeft.on(SpeedPercent(d))
+        topRight.on(SpeedPercent(ms(a)))
+        bottomRight.on(SpeedPercent(ms(b)))
+        topLeft.on(SpeedPercent(ms(c)))
+        bottomLeft.on(SpeedPercent(ms(d)))
 except:
     print("Error")
     coast() # Stop Motors

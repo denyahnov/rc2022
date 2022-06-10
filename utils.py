@@ -51,12 +51,20 @@ def motorDirection(direction):
     elif direction == 8:
         return -1,1,-1,1
 
+# Motor Speed does not go ouotside boundaries
+def ms(speed):
+    speed=round(speed)
+    if speed < -100: return -100
+    if speed > 100: return 100
+    return speed
+
 # Points towards 'North'
 def pointForward(angle):
     if 2 < angle < 181:
         return (round((angle+2)/7.5))*-1
     elif 358 > angle > 180:
-        return 25 - (round((angle+2)/15))
+        angle-=180
+        return (round((angle+2)/7.5))
     else:
         return 0
 
