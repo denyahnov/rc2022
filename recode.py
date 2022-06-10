@@ -40,7 +40,7 @@ screen = Display()
 leds = Leds()
 
 # Variables
-fieldWidth=(1800)/2
+fieldWidth=(180)/2
 speed=70
 goal=compass.value()
 
