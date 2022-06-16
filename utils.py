@@ -50,6 +50,11 @@ def motorDirection(direction):
         return 0,1,-1,0
     elif direction == 8:
         return -1,1,-1,1
+    elif direction == 9:
+        return -0.5,1,-1,0.5
+    elif direction == 10:
+        return 1,-0.5,0.5,-1
+    return 0,0,0,0
 
 # Motor Speed does not go ouotside boundaries
 def ms(speed):
@@ -63,16 +68,17 @@ def pointForward(angle):
     if 2 < angle < 181:
         return (round((angle+2)/7.5))*-1
     elif 358 > angle > 180:
-        angle-=180
+        angle*=-1
+        angle+=360
         return (round((angle+2)/7.5))
     else:
         return 0
 
 # Get robot position on field
 def getPos(distance,fieldWidth):
-    if distance > (fieldWidth+80):
+    if distance > (fieldWidth+18):
         return 1
-    elif distance < (fieldWidth-80):
+    elif distance < (fieldWidth-18):
         return 2
     else:
         return 0
@@ -80,51 +86,54 @@ def getPos(distance,fieldWidth):
 # Convert IR Inputs to a Pos Value and Strength Value
 def irToPos(fp,bp,fs,bs):
     if 1 < fp < 9:
-        i=(fp*30)-150
-        if i < 0: i+=360
+        i=(fp)-5
+        if i < 0: i+=12
         return i,max(fs)
     elif 1 < bp < 9:
-        i=(bp*30)+30
-        if i < 0: i+=360
+        i=(bp)+1
+        if i < 0: i+=12
         return i,max(bs)
     elif fp > 0:
-        i=(fp*30)-150
-        if i < 0: i+=360
+        i=(fp)-5
+        if i < 0: i+=12
         return i,max(fs)
     elif bp > 0:
-        i=(bp*30)+30
-        if i < 0: i+=360
+        i=(bp)+1
+        if i < 0: i+=12
         return i,max(bs)
     else:
         return -1,-1
 
 # Convert IR position to Motor Direction
 def moveBall(pos,strength,dist,fieldWidth):
-    if 314 < pos < 330:
-        return 1
-    elif 329 < pos < 361 or -1 < pos < 30:
-        return 2
-    elif 29 < pos < 45:
-        return 3
-    elif 44 < pos < 90:
-        return 4
-    elif 89 < pos < 135:
-        return 7
-    elif 134 < pos < 215:
+    if pos == 0: return 2
+    if pos == 1: return 3
+    if pos == 2: return 3
+    if pos == 3: return 5
+    if pos == 4: return 5
+    if pos == 5: return 7
+    if pos == 6:
         if getPos(dist,fieldWidth) == 1:
             return 4
         else:
             return 8
-    elif 214 < pos < 270:
-        return 5
-    elif 269 < pos < 315:
-        return 8
-    else:
-        return 0
+    if pos == 7: return 5
+    if pos == 8: return 7
+    if pos == 9: return 7
+    if pos == 10: return 1
+    if pos == 11: return 1
+    return 0
 
 # Curve towards Goal
 def curve(dist,field):
     p=getPos(dist,field)
     if p== 0: return 0
-    elif p== 1: return 5
-    elif p== 2: return-5
+    if p== 1: return 2
+    if p== 2: return -2
+
+# Center Robot
+def center(dist,field):
+    p=getPos(dist,field)
+    if p== 0: return 6
+    if p== 1: return 4
+    if p== 2: return 8
