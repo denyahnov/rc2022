@@ -1,5 +1,43 @@
 base_plate:
-  children: []
+  children:
+  - friction: 0.8
+    key: phys_obj-child-0
+    physics: true
+    position:
+    - 7.0
+    - -2.0
+    restitution: 0.2
+    rotation: 0.7853981633974483
+    type: object
+    visual:
+      fill: '#878E88'
+      height: 3
+      name: Rectangle
+      rotation: 0.0
+      stroke: '#ffffff'
+      stroke_width: 0.1
+      type: visual
+      width: 1.0
+      zPos: 2
+  - friction: 0.8
+    key: phys_obj-child-1
+    physics: true
+    position:
+    - 7.0
+    - 2.0
+    restitution: 0.2
+    rotation: 2.356194490192345
+    type: object
+    visual:
+      fill: '#878E88'
+      height: 3
+      name: Rectangle
+      rotation: 0.0
+      stroke: '#ffffff'
+      stroke_width: 0.1
+      type: visual
+      width: 1.0
+      zPos: 2.5
   friction: 0.8
   key: phys_obj
   mass: 5

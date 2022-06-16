@@ -50,6 +50,10 @@ def motorDirection(direction):
         return 0,1,-1,0
     elif direction == 8:
         return -1,1,-1,1
+    elif direction == 9:
+        return -1,0.5,-0.5,1
+    elif direction == 10:
+        return 0.5,-1,1,-0.5
 
 # Motor Speed does not go ouotside boundaries
 def ms(speed):
@@ -125,3 +129,10 @@ def curve(dist,field):
     if p== 0: return 0
     if p== 1: return 5
     if p== 2: return -5
+
+# Center Robot
+def center(dist,field):
+    p=getPos(dist,field)
+    if p== 0: return 6
+    if p== 1: return 10
+    if p== 2: return 9
