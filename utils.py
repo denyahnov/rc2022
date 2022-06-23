@@ -64,13 +64,15 @@ def ms(speed):
     return speed
 
 # Points towards 'North'
-def pointForward(angle):
+def pointForward(angle,speed):
     if 2 < angle < 181:
-        return (round((angle+2)/7.5))*-1
+        percent=(round((angle+2)/7.5))/-100
+        return speed*percent
     elif 358 > angle > 180:
         angle*=-1
         angle+=360
-        return (round((angle+2)/7.5))
+        percent=(round((angle+2)/7.5))/100
+        return speed*percent
     else:
         return 0
 
@@ -85,11 +87,11 @@ def getPos(distance,fieldWidth):
 
 # Convert IR Inputs to a Pos Value and Strength Value
 def irToPos(fp,bp,fs,bs):
-    if 1 < fp < 9:
+    if 2 < fp < 8:
         i=(fp)-5
         if i < 0: i+=12
         return i,max(fs)
-    elif 1 < bp < 9:
+    elif 2 < bp < 8:
         i=(bp)+1
         if i < 0: i+=12
         return i,max(bs)
@@ -108,19 +110,19 @@ def irToPos(fp,bp,fs,bs):
 def moveBall(pos,strength,dist,fieldWidth):
     if pos == 0: return 2
     if pos == 1: return 3
-    if pos == 2: return 3
-    if pos == 3: return 5
-    if pos == 4: return 5
-    if pos == 5: return 7
+    if pos == 2: return 5
+    if pos == 3: return 6
+    if pos == 4: return 6
+    if pos == 5: return 6
     if pos == 6:
         if getPos(dist,fieldWidth) == 1:
             return 4
         else:
             return 8
-    if pos == 7: return 5
-    if pos == 8: return 7
-    if pos == 9: return 7
-    if pos == 10: return 1
+    if pos == 7: return 6
+    if pos == 8: return 6
+    if pos == 9: return 6
+    if pos == 10: return 7
     if pos == 11: return 1
     return 0
 

@@ -42,9 +42,9 @@ leds = Leds()
 
 # Variables
 fieldWidth=(180)/2
-topspeed=30
-speed=20
-slowspeed=10
+topspeed=80
+speed=75
+slowspeed=50
 sp=speed
 goal=compass.value()
 
@@ -72,9 +72,14 @@ def coast():
 thread = Thread(target=ultrasonicThread.ulthread)
 thread.start()
 
+leds.set_color('LEFT', 'AMBER')
+leds.set_color('RIGHT', 'AMBER')
+
 try:
     while not buttons.right:
         sleep(0.05)
+    leds.set_color('LEFT', 'GREEN')
+    leds.set_color('RIGHT', 'GREEN')
     while True:
         if buttons.backspace or buttons.left:
             break
@@ -91,7 +96,7 @@ try:
         position=irToPos(fp,bp,fs,bs)[0] # Ball Position
         strength=irToPos(fp,bp,fs,bs)[1] # Ball Strength
         direction=moveBall(position,strength,dist,fieldWidth) # Decide Motor Direction
-        drift=pointForward(ang) # Point 'North'
+        drift=pointForward(ang,speed) # Point 'North'
         if 129 < iF.value(3): 
             #cv=curve(dist,fieldWidth) # Curve Towards Goal
             cv=0
