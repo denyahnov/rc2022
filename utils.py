@@ -65,22 +65,21 @@ def ms(speed):
 
 # Points towards 'North'
 def pointForward(angle,speed):
-    if 2 < angle < 181:
-        percent=(round((angle+2)/7.5))/-100
+    left=0 if 358 > angle > 180 else 1
+    if 358 > angle > 2:
+        if angle > 180:
+            angle*=-1
+            angle+=360
+        percent=round((angle+10)/2)
+        percent/=-100 if left == 1 else 100
         return speed*percent
-    elif 358 > angle > 180:
-        angle*=-1
-        angle+=360
-        percent=(round((angle+2)/7.5))/100
-        return speed*percent
-    else:
-        return 0
+    return 0
 
 # Get robot position on field
 def getPos(distance,fieldWidth):
-    if distance > (fieldWidth+18):
+    if distance > (fieldWidth+130):
         return 1
-    elif distance < (fieldWidth-18):
+    elif distance < (fieldWidth-130):
         return 2
     else:
         return 0
@@ -107,31 +106,49 @@ def irToPos(fp,bp,fs,bs):
         return -1,-1
 
 # Convert IR position to Motor Direction
-def moveBall(pos,strength,dist,fieldWidth):
-    if pos == 0: return 2
-    if pos == 1: return 3
-    if pos == 2: return 5
-    if pos == 3: return 6
-    if pos == 4: return 6
-    if pos == 5: return 6
-    if pos == 6:
-        if getPos(dist,fieldWidth) == 1:
-            return 4
-        else:
-            return 8
-    if pos == 7: return 6
-    if pos == 8: return 6
-    if pos == 9: return 6
-    if pos == 10: return 7
-    if pos == 11: return 1
+def moveBall(pos,strength,dist,fieldWidth,curving):
+    if not curving:
+        if pos == 0: return 2
+        if pos == 1: return 3
+        if pos == 2: return 5
+        if pos == 3: return 6
+        if pos == 4: return 6
+        if pos == 5: return 6
+        if pos == 6:
+            if getPos(dist,fieldWidth) == 1:
+                return 4
+            else:
+                return 8
+        if pos == 7: return 6
+        if pos == 8: return 6
+        if pos == 9: return 6
+        if pos == 10: return 7
+        if pos == 11: return 1
+    else:
+        if pos == 0: return 2
+        if pos == 1: return 3
+        if pos == 2: return 4
+        if pos == 3: return 5
+        if pos == 4: return 6
+        if pos == 5: return 7
+        if pos == 6:
+            if getPos(dist,fieldWidth) == 1:
+                return 4
+            else:
+                return 8
+        if pos == 7: return 5
+        if pos == 8: return 6
+        if pos == 9: return 7
+        if pos == 10: return 8
+        if pos == 11: return 1
     return 0
 
 # Curve towards Goal
-def curve(dist,field):
+def curve(dist,field,speed):
     p=getPos(dist,field)
     if p== 0: return 0
-    if p== 1: return 2
-    if p== 2: return -2
+    if p== 1: return round(speed*0.2)
+    if p== 2: return round(speed*-0.2)
 
 # Center Robot
 def center(dist,field):

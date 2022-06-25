@@ -6,8 +6,9 @@ from ev3dev2.console import *
 from ev3dev2.motor import *
 from ev3dev2.sensor import *
 from ev3dev2.sensor.lego import *
-from ev3dev2.display import *
 from ev3dev2.led import *
+from ev3dev2.sound import *
+from ev3dev2.power import *
 print("ev3dev2 Imported")
 
 # Other Imports
@@ -37,14 +38,16 @@ ultrasonic.mode = "US-DIST-CM"
 
 # Initialize Brick Functions
 buttons = Button()
-screen = Display()
+sound = Sound()
 leds = Leds()
+battery = PowerSupply()
+paused = False
 
 # Variables
-fieldWidth=(180)/2
-topspeed=80
-speed=75
-slowspeed=50
+fieldWidth=(1000)/2
+topspeed=70
+speed=45
+slowspeed=20
 sp=speed
 goal=compass.value()
 
@@ -69,20 +72,32 @@ def coast():
     bottomLeft.off(brake=False)
     
 # Start Thread
-thread = Thread(target=ultrasonicThread.ulthread)
-thread.start()
+#thread = Thread(target=ultrasonicThread.ulthread)
+#thread.start()
 
 leds.set_color('LEFT', 'AMBER')
 leds.set_color('RIGHT', 'AMBER')
+sound.set_volume(20)
+sound.play_tone(650,0.3,0,20,sound.PLAY_NO_WAIT_FOR_COMPLETE)
+print("Battery:",battery.measured_voltage)
 
 try:
     while not buttons.right:
         sleep(0.05)
+    while buttons.right:
+        sleep(0.03)
     leds.set_color('LEFT', 'GREEN')
     leds.set_color('RIGHT', 'GREEN')
     while True:
+        if buttons.right:
+            coast()
+            paused = not paused
+            sound.play_tone(450,0.3,0,20,sound.PLAY_NO_WAIT_FOR_COMPLETE) if paused else sound.play_tone(650,0.3,0,20,sound.PLAY_NO_WAIT_FOR_COMPLETE)
+            while buttons.right:
+                sleep(0.05)
         if buttons.backspace or buttons.left:
             break
+        if paused: continue
         fp=iF.value(0) # Front Pos
         bp=iB.value(0) # Back Pos
         fs=[iF.value(1),iF.value(2),iF.value(3),iF.value(4),iF.value(5)] # Front Strength
@@ -95,12 +110,13 @@ try:
 
         position=irToPos(fp,bp,fs,bs)[0] # Ball Position
         strength=irToPos(fp,bp,fs,bs)[1] # Ball Strength
-        direction=moveBall(position,strength,dist,fieldWidth) # Decide Motor Direction
+        direction=moveBall(position,strength,dist,fieldWidth,False) # Decide Motor Direction
         drift=pointForward(ang,speed) # Point 'North'
         if 129 < iF.value(3): 
-            #cv=curve(dist,fieldWidth) # Curve Towards Goal
+            #sound.play_tone(520,0.5,0,20,sound.PLAY_NO_WAIT_FOR_COMPLETE)
+            cv=curve(dist,fieldWidth,topspeed) # Curve Towards Goal
             cv=0
-            if sp < topspeed: sp*=1.01
+            if sp < topspeed: sp*=1.03
             if sp > topspeed: sp=topspeed
         else:
             cv=0
@@ -125,9 +141,15 @@ except Exception:
     print("Error")
     print_exc()
     coast() # Stop Motors
+    sleep(1)
     ultrasonicThread.running = False # Kill Thread
+    sleep(1)
+except:
+    print("Interrupted")
+    coast() # Stop Motors
     sleep(1)
 print("Ended")
 coast() # Stop Motors
+sleep(1)
 ultrasonicThread.running = False # Kill Thread
 sleep(1)
