@@ -45,8 +45,8 @@ paused = False
 
 # Variables
 fieldWidth=(1000)/2
-topspeed=70
-speed=45
+topspeed=60
+speed=40
 slowspeed=20
 sp=speed
 goal=compass.value()
