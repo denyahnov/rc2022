@@ -4,14 +4,12 @@
 from ev3dev2.motor import *
 from ev3dev2.sensor import *
 from ev3dev2.sensor.lego import *
-from ev3sim.code_helpers import wait_for_tick
-print("ev3dev2 Imported")
+from ev3sim.code_helpers import *
 
 # Other Imports
 from utils import *
 from threading import Thread
 from time import sleep
-print("utils Imported")
 
 # Initialize Motors
 topLeft = LargeMotor(OUTPUT_C)
@@ -37,6 +35,43 @@ speed=80
 sp=speed
 goal=compass.value()
 
+class comms():
+    address = '00:16:53:42:2B:99'
+    port = 1000
+    client = None
+    info = None
+    state = -1
+    teammate = -1
+    enabled = True
+    server = False
+    def Begin(self):
+        try:
+            if robot_id == 'Robot-0' or robot_id == 'Robot-3':
+                server = CommServer(self.address,self.port)
+                self.client,self.info = server.accept_client()
+                self.server = True
+                print('Server')
+                return 1
+            else:
+                self.client = CommClient(self.address,self.port)
+                self.server = False
+                print('Client')
+                return 1
+        except:
+            return 0
+    def Run(self):
+        if self.server: self.teammate = int(self.client.recv(1024))     
+        else: self.client.send(str(self.state))
+
+        while self.enabled:
+            try:
+                self.client.send(str(self.state))
+                sleep(0.05)
+                self.teammate = int(self.client.recv(1024))
+                sleep(0.05)
+            except:
+                sleep(0.5)
+
 class ultrasonicThread():
     distance=ultrasonic.value()
     running=True
@@ -57,9 +92,12 @@ def coast():
     bottomLeft.off(brake=False)
     
 # Start Thread
-thread = Thread(target=ultrasonicThread.ulthread)
-thread.start()
-
+#thread = Thread(target=ultrasonicThread.ulthread)
+#thread.start()
+if comms.Begin(comms) == 1: 
+    comms.state=1
+    thread = Thread(target=comms.Run,args=(comms,))
+    thread.start()
 try:
     while True:
         fp=iF.value(0) # Front Pos
@@ -70,20 +108,22 @@ try:
         dist=ultrasonic.value() # Ultrasonic Distance
         stalled=topLeft.is_stalled
         usBlocked=robotNotBlocking(dist,ultrasonicThread.distance) # Ultrasonic Blocked by Object
-
+        robotState=commState(comms.state,comms.teammate,comms.server)
         position=irToPos(fp,bp,fs,bs)[0] # Ball Position
         strength=irToPos(fp,bp,fs,bs)[1] # Ball Strength
         direction=moveBall(position,strength,dist,fieldWidth) # Decide Motor Direction
         drift=pointForward(ang) # Point 'North'
         if 6 < iF.value(3): 
+            comms.state=1
             cv=curve(dist,fieldWidth) # Curve Towards Goal
             if sp < 90: sp=sp*1.01
             if sp > 90: sp=90
         else: 
+            comms.state=0
             cv=0
             if sp > speed: sp*=0.99
             if sp < speed: sp=speed
-        if direction == 0: direction=center(dist,fieldWidth); sp=35
+        if direction == 0 or robotState == 2: direction=center(dist,fieldWidth); sp=35; comms.state=2
         if cv != 0: drift=0
         if drift < 0: sp+=5
         
@@ -103,8 +143,10 @@ except:
     print("Error")
     coast() # Stop Motors
     ultrasonicThread.running = False # Kill Thread
+    comms.enabled = False
     sleep(1)
 print("Ended")
 coast() # Stop Motors
 ultrasonicThread.running = False # Kill Thread
+comms.enabled = False
 sleep(1)

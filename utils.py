@@ -156,3 +156,19 @@ def center(dist,field):
     if p== 0: return 6
     if p== 1: return 4
     if p== 2: return 8
+    
+# Get Comm State
+def commState(state,teammate,server):
+    if state == 1 and teammate == 1:
+        if server:
+            return 1 # Attack
+        else:
+            return 2 # Defend
+    elif state == 2 and teammate == 2:
+        if server:
+            return 1 # Attack
+        else:
+            return 2 # Defend
+    elif state != 1 and teammate == 1:
+        return 2 # Defend
+    return state

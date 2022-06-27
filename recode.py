@@ -41,7 +41,7 @@ buttons = Button()
 sound = Sound()
 leds = Leds()
 battery = PowerSupply()
-paused = False
+paused = True
 
 # Variables
 fieldWidth=(1000)/2
@@ -50,6 +50,36 @@ speed=40
 slowspeed=20
 sp=speed
 goal=compass.value()
+
+# COMM STATES:
+# -1 : Offline
+#  0 : Idle
+#  1 : Attacking
+#  2 : Defending
+
+class comms():
+    address = '00:16:53:42:2B:99'
+    port = 1000
+    client = None
+    state = -1
+    teammate = -1
+    enabled = True
+    server = False
+    def Begin(self):
+        try:
+            self.client = CommClient(self.address,self.port)
+            self.server = False
+            return 1
+        except:
+            server = CommServer(self.address,self.port)
+            self.client = server.accept_client()
+            self.server = True
+            return 2
+        return 0
+    def loop(self):
+        while self.enabled:
+            self.client.send(str(self.state))
+            self.teammate = int(self.client.recv(1024))
 
 class ultrasonicThread():
     distance=ultrasonic.value()
@@ -75,6 +105,7 @@ def coast():
 #thread = Thread(target=ultrasonicThread.ulthread)
 #thread.start()
 
+if comms.Begin(comms) != 0: comms.state=0 # Begin Bluetooth Comms
 leds.set_color('LEFT', 'AMBER')
 leds.set_color('RIGHT', 'AMBER')
 sound.set_volume(20)
@@ -82,10 +113,8 @@ sound.play_tone(650,0.3,0,20,sound.PLAY_NO_WAIT_FOR_COMPLETE)
 print("Battery:",battery.measured_voltage)
 
 try:
-    while not buttons.right:
-        sleep(0.05)
-    while buttons.right:
-        sleep(0.03)
+    while not buttons.right: sleep(0.05)
+    while buttons.right: sleep(0.05)
     leds.set_color('LEFT', 'GREEN')
     leds.set_color('RIGHT', 'GREEN')
     while True:
@@ -110,6 +139,7 @@ try:
 
         position=irToPos(fp,bp,fs,bs)[0] # Ball Position
         strength=irToPos(fp,bp,fs,bs)[1] # Ball Strength
+        if comms.teammate == 1: comms.state=2; position=-1
         direction=moveBall(position,strength,dist,fieldWidth,False) # Decide Motor Direction
         drift=pointForward(ang,speed) # Point 'North'
         if 129 < iF.value(3): 
