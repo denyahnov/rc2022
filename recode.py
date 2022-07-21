@@ -105,7 +105,7 @@ def coast():
 #thread = Thread(target=ultrasonicThread.ulthread)
 #thread.start()
 
-if comms.Begin(comms) != 0: comms.state=0 # Begin Bluetooth Comms
+#if comms.Begin(comms) != 0: comms.state=0 # Begin Bluetooth Comms
 leds.set_color('LEFT', 'AMBER')
 leds.set_color('RIGHT', 'AMBER')
 sound.set_volume(20)
@@ -139,8 +139,8 @@ try:
 
         position=irToPos(fp,bp,fs,bs)[0] # Ball Position
         strength=irToPos(fp,bp,fs,bs)[1] # Ball Strength
-        if comms.teammate == 1: comms.state=2; position=-1
-        direction=moveBall(position,strength,dist,fieldWidth,False) # Decide Motor Direction
+        #if comms.teammate == 1: comms.state=2; position=-1
+        direction=moveBall(position,strength,dist,fieldWidth,False,2) # Decide Motor Direction
         drift=pointForward(ang,speed) # Point 'North'
         if 129 < iF.value(3): 
             #sound.play_tone(520,0.5,0,20,sound.PLAY_NO_WAIT_FOR_COMPLETE)
