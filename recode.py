@@ -137,8 +137,11 @@ try:
         stalled=topLeft.is_stalled
         usBlocked=robotNotBlocking(dist,ultrasonicThread.distance) # Ultrasonic Blocked by Object
 
-        position=irToPos(fp,bp,fs,bs)[0] # Ball Position
-        strength=irToPos(fp,bp,fs,bs)[1] # Ball Strength
+        x=irToPos(fp,bp,fs,bs)
+
+        position=x[0] # Ball Position
+        strength=x[1] # Ball Strength
+        
         #if comms.teammate == 1: comms.state=2; position=-1
         direction=moveBall(position,strength,dist,fieldWidth,False,2) # Decide Motor Direction
         drift=pointForward(ang,speed) # Point 'North'
@@ -156,11 +159,13 @@ try:
         if cv != 0: drift=0
         #if drift < 0: sp+=5
         
+        f=motorDirection(direction)
+        
         # Calc Motor Speeds
-        a=(motorDirection(direction)[0]*sp) + drift + cv
-        b=(motorDirection(direction)[1]*sp) + drift + cv
-        c=(motorDirection(direction)[2]*sp) + drift + cv
-        d=(motorDirection(direction)[3]*sp) + drift + cv
+        a=(f[0]*sp) + drift + cv
+        b=(f[1]*sp) + drift + cv
+        c=(f[2]*sp) + drift + cv
+        d=(f[3]*sp) + drift + cv
 
         # Move Motors
         topRight.on(SpeedPercent(ms(a)))
