@@ -2,13 +2,15 @@
 
 from turtle import *
 from utils import *
-from ev3dev2.sensor import *
+# from ev3dev2.sensor import *
 
-iF = Sensor(INPUT_1, driver_name = "ht-nxt-ir-seek-v2")
-iB = Sensor(INPUT_2, driver_name = "ht-nxt-ir-seek-v2")
+# iF = Sensor(INPUT_1, driver_name = "ht-nxt-ir-seek-v2")
+# iB = Sensor(INPUT_2, driver_name = "ht-nxt-ir-seek-v2")
 
-iF.mode = "AC-ALL"
-iB.mode = "AC-ALL"
+# iF.mode = "AC-ALL"
+# iB.mode = "AC-ALL"
+
+prevPos=0
 
 def addDot(tu,pos=[0,0],color='red',size=20):
     x = pos[0]
@@ -38,25 +40,27 @@ if __name__ == "__main__":
     title('IR Sensor Visualiser')
 
     tu = Turtle()
+    
     tu.pu()
     tu.ht()
     tu.speed(0)
     tu.shape('circle')
 
-    while True:
-        fp=iF.value(0) # Front Pos
-        bp=iB.value(0) # Back Pos
+    while True:     
+        fp=int(input()) # Front Pos
+        bp=0 # Back Pos
 
-        fs=[iF.value(1),iF.value(2),iF.value(3),iF.value(4),iF.value(5)] # Front Strength
-        bs=[iB.value(1),iB.value(2),iB.value(3),iB.value(4),iB.value(5)] # Back Strength
+        fs=[0] # Front Strength
+        bs=[0] # Back Strength
 
         x=irToPos(fp,bp,fs,bs)
 
         position=x[0] # Ball Position
         strength=x[1] # Ball Strength
         
-        resetscreen()
+        if position != prevPos:
+            resetscreen()
 
-        addDot(tu,ps(position))
-        addDot(tu,[0,0],'black',60)
-        input()
+            addDot(tu,ps(position))
+            addDot(tu,[0,0],'black',60)
+        prevPos=position
