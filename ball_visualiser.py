@@ -47,6 +47,8 @@ if __name__ == "__main__":
     tu.shape('circle')
 
     while True:     
+        tu.pu()
+        tu.ht()
         fp=int(input()) # Front Pos
         bp=0 # Back Pos
 

@@ -2,12 +2,14 @@
 from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4, Sensor
 from ev3dev2.sensor.lego import UltrasonicSensor
+from ev3dev2.button import *
 
 # Initialize Sensors
 irFront = Sensor(INPUT_1, driver_name = "ht-nxt-ir-seek-v2")
 irBack = Sensor(INPUT_2, driver_name = "ht-nxt-ir-seek-v2")
 compass = Sensor(INPUT_3, driver_name = "ht-nxt-compass")
 ultrasonic = UltrasonicSensor(INPUT_4)
+buttons = Button()
 
 # Set Sensor Modes
 irFront.mode = "AC-ALL"
@@ -29,7 +31,7 @@ def getAngle(angle):
 print("Testing Sensors...")
 
 try:
-    while True:
+    while not buttons.right:
         input()
         print('\n---Test #' + str(num) + '---')
         print('Sensor Values:')

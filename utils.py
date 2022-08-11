@@ -22,7 +22,7 @@ def getAngle(angle, centerAngle):
 
 # Check if Robot has Possesion of the Ball
 def ballPossesion(centerStrength):
-    if 150 < centerStrength < 300:
+    if 115 < centerStrength < 300:
         return True
     else:
         return False
@@ -70,7 +70,7 @@ def pointForward(angle,speed):
         if angle > 180:
             angle*=-1
             angle+=360
-        percent=round((angle+10)/2)
+        percent=round((angle+10)/2)+2
         percent/=-100 if left == 1 else 100
         return speed*percent
     return 0
@@ -147,8 +147,8 @@ def moveBall(pos,strength,dist,fieldWidth,curving,robot_num=1):
 def curve(dist,field,speed):
     p=getPos(dist,field)
     if p== 0: return 0
-    if p== 1: return round(speed*0.2)
-    if p== 2: return round(speed*-0.2)
+    if p== 1: return round(speed*0.1)
+    if p== 2: return round(speed*-0.1)
 
 # Center Robot
 def center(dist,field):

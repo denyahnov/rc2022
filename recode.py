@@ -44,10 +44,10 @@ battery = PowerSupply()
 paused = True
 
 # Variables
-fieldWidth=(1000)/2
-topspeed=60
-speed=40
-slowspeed=20
+fieldWidth=(1700)/2 # Min [650-700], Max [1000]
+topspeed=90
+speed=60
+slowspeed=30
 sp=speed
 goal=compass.value()
 
@@ -148,7 +148,6 @@ try:
         if 129 < iF.value(3): 
             #sound.play_tone(520,0.5,0,20,sound.PLAY_NO_WAIT_FOR_COMPLETE)
             cv=curve(dist,fieldWidth,topspeed) # Curve Towards Goal
-            cv=0
             if sp < topspeed: sp*=1.03
             if sp > topspeed: sp=topspeed
         else:
