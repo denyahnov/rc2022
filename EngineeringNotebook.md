@@ -1,5 +1,5 @@
 # Monkey Madness 
-![](https://cdn.discordapp.com/attachments/516360486963380226/1009972062066053160/MonkeyMadness.png?width=100&height=100)
+![MonkeyMadnessSmall](https://user-images.githubusercontent.com/60083582/185514677-70e94f78-bb10-4946-b1b8-a40c2645fdb7.png)
 
 ## 2022 RoboCup Junior Australia
 
@@ -12,6 +12,8 @@ We are Dennis and Riveen, a group of year 9s from Melbourne High School. We are 
 ### **Strategy:**
 **Game:**
 Our strategy for this competition was to try hold ball possession for as long as possible throughout the matches. We found that...
+
+![Soccer Field](https://user-images.githubusercontent.com/60083582/185514513-ba5dd76e-ddfc-4a0a-9a91-03beb1630f51.png)
 
 **Building:**
 Our Robots were designed for durability and power rather than extreme speed. Based on previous competitions, we found that robots able to overpower the other team could gain ball possession far more than a lightweight but fast robot. The choice to use EV3 Large Motors for our drivebase was a result of this consideration, as we found that the heavier and larger motors produce more power than the smaller EV3 Medium Motors which are favorable for many teams.
