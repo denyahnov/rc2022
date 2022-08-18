@@ -1,4 +1,5 @@
-# Monkey Madness
+# Monkey Madness 
+![](https://cdn.discordapp.com/attachments/516360486963380226/1009972062066053160/MonkeyMadness.png?width=100&height=100)
 
 ## 2022 RoboCup Junior Australia
 
