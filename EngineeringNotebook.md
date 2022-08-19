@@ -34,7 +34,7 @@ B --> C(Process Information)
 C --> A
 ```
 ### **Robot Design:**
-Our design choices for this competition were to use 2 identical robots with 4 EV3 Large Motors, 2 I2C IR Sensors, 1 I2C Compass Sensor and an EV3 Ultrasonic Sensor. We decided that the identity between robots would help resolve issues and keep code as similar as possible. 
+Our design choices for this competition were to use 2 identical robots with 4 EV3 Large Motors, 2 I2C Infrared Sensors, 1 I2C Compass Sensor and an EV3 Ultrasonic Sensor. We decided that the identity between robots would help resolve issues and keep code as similar as possible. 
 
 Because of the limited time working on the robot in person, we began testing out with [different robot designs](https://github.com/denyahnov/rc2022/blob/main/EngineeringNotebook.md#photos) using parts from home or [Studio 2.0](https://www.bricklink.com/v2/build/studio.page), a virtual LEGO builder.
 
