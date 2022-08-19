@@ -64,9 +64,11 @@ Our robots are coded in [Python](https://www.python.org/) language using the [ev
 
 We run the main chunk of our code in a single main loop, which uses utilities and functions from other files. We use a seperate thread for bluetooth communication, allowing for it to run simultaneousy with the main run. We started off by using [EV3Sim](https://ev3sim.mhsrobotics.club/), an application developed by the school to practice coding in a virtual environment. It helped us build the foundation of our code while working from home.
 
-Our code accounts for robot inconsistency and faulty sensors. The main chunk of logic stays the same but small functions like converting ball position to robot direction has configurable variables that shift between robots.
+Our code accounts for robot inconsistency and faulty sensors. The main chunk of logic stays the same but small functions like converting ball position to robot direction has configurable variables that shift between robots. We also average ultrasonic sensor values over the past __ readings, excluding any extremely rapid increases/decreases in value as to account for objects blocking the ultrasonic.
 
 We use bluetooth for communication between robots. We have one robot run as a server and the other connects afterwards as a client. The robots relay whatever information they recieve between themselves e.g. Ball Possession, Current Attack/Defense State, etc.
+
+We do not use any sensors like touch or colour to detect if the robot has possession of the ball, instead we use the infrared proximity which is a neat feature.
 
 ### **Photos:**
 **Prototypes:**
