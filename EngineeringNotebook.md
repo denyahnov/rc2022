@@ -50,6 +50,8 @@ Our design choices for this competition were to use 2 identical robots with 4 EV
 
 Because of the limited time working on the robot in person, we began testing out with [different robot designs](https://github.com/denyahnov/rc2022/blob/main/EngineeringNotebook.md#photos) using parts from home or [Studio 2.0](https://www.bricklink.com/v2/build/studio.page), a virtual LEGO builder.
 
+We use 4 motors with omniwheels positioned around the robot to form an X-drive, which allows the robot to move in 8 directions rather than 2. The omniwheels we use for these are completely legal as they are built from LEGO pieces
+
 We decided to use 2 Infrared Sensors position opposite each other to provide 360 degree coverage around the robot, meaning we would not need to spin around to find the ball if it is not detected. We use the compass for reading our angle which is used in straightening ourselves as well as curving at the opponent goal. We use an  Utrasonic positioned on the side of our robots to read our position on the field horizontally. This helps the robot figure out where it is on the field at all times.
 
 | **Motor**         |  **Pros**                     |  **Cons**                           |
