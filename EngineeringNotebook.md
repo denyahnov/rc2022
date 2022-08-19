@@ -30,7 +30,8 @@ BallPos-- Not Found --> Defend
 BallPos-- Found --> Neutral((Neutral)) --> NeutralSpeed(Neutral Speed) --> GoToBall(Go Towards Ball)
 Connected[Robots Connected?] -- Yes --> A(Send Robot Information)
 A --> B(Receive Teammate Information)
-B --> A
+B --> C(Process Information)
+C --> A
 ```
 ### **Robot Design:**
 Our design choices for this competition were to use 2 identical robots with 4 EV3 Large Motors, 2 I2C IR Sensors, 1 I2C Compass Sensor and an EV3 Ultrasonic Sensor. We decided that the identity between robots would help resolve issues and keep code as similar as possible. 
