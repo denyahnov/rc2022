@@ -50,6 +50,11 @@ Our design choices for this competition were to use 2 identical robots with 4 EV
 
 Because of the limited time working on the robot in person, we began testing out with [different robot designs](https://github.com/denyahnov/rc2022/blob/main/EngineeringNotebook.md#photos) using parts from home or [Studio 2.0](https://www.bricklink.com/v2/build/studio.page), a virtual LEGO builder.
 
+| **Motor**        | **Pros**                    | **Cons**                           |
+|------------------|-----------------------------|------------------------------------|
+| EV3 Medium Motor | Fast, Lightweight, Small    | Weaker, Need Geartrain for X-Drive |
+| EV3 Large Motor  | Strong, Easy to Incorporate | Slower, Bulkier, Heavier           |
+
 ### **Robot Code:**
 Our robots are coded in [Python](https://www.python.org/) language using the [ev3dev](https://www.ev3dev.org/) library. All our code is publicly available on our [GitHub repository](https://github.com/denyahnov/rc2022/). 
 
