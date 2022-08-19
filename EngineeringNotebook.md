@@ -52,7 +52,3 @@ We use bluetooth for communication between robots. We have one robot run as a se
 
 ![First Prototype](https://media.discordapp.net/attachments/496240143494021120/939835121182330930/SoccerV2.png?width=210&height=270)
 ![Second Prototype](https://media.discordapp.net/attachments/516360486963380226/946962209639112735/UpdatedSoccerRobotRENDER.png?width=200&height=270)
-
-![EV3Sim Robot](https://github.com/denyahnov/rc2022/blob/main/ev3sim/preview.png?width=200&height=200)
-
-EV3Sim Robot Design
