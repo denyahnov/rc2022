@@ -19,7 +19,7 @@ We are Dennis and Riveen, a group of year 9s from Melbourne High School. We are 
 
 ### **Strategy:**
 **Game:**
-Our strategy for this competition was to try hold ball possession for as long as possible throughout the matches. We found that... We chose to run 2 Offense robots, opting out of using a designated 'goalie'. This was partly due to the previously stated decision, but also because we chose to use inter-robot communication. The ability for the robots to relay information like ball possession would allow them to play defense/offense completely autonomously, without the need of specific roles.
+Our strategy for this competition was to try hold ball possession for as long as possible throughout the matches as we found that just preventing the other team from possessing the ball was enough to gain an advantage in matches. We chose to run 2 Offense robots, opting out of using a designated 'goalie'. This was partly due to the previously stated decision, but also because we chose to use inter-robot communication. The ability for the robots to relay information like ball possession would allow them to play defense/offense completely autonomously, without the need of specific roles.
 
 ![Soccer Field](https://user-images.githubusercontent.com/60083582/185514513-ba5dd76e-ddfc-4a0a-9a91-03beb1630f51.png)
 
