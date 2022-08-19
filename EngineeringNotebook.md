@@ -46,9 +46,5 @@ We use bluetooth communication between to robots to...
 ### **Photos:**
 **Prototypes:**
 
-![First Prototype](https://media.discordapp.net/attachments/496240143494021120/939835121182330930/SoccerV2.png?width=180&height=270)
-![Second Prototype](https://media.discordapp.net/attachments/516360486963380226/946962209639112735/UpdatedSoccerRobotRENDER.png?width=190&height=270)
-
-**Other:**
-
-![EV3Sim](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHR1z5GIx346WoQsXJwFxxocKntZnXWBdwrd3m0g0LALeAKT-F_B7uU0DLNo6NYp6fQ3I&usqp=CAU")
+![First Prototype](https://media.discordapp.net/attachments/496240143494021120/939835121182330930/SoccerV2.png?width=210&height=270)
+![Second Prototype](https://media.discordapp.net/attachments/516360486963380226/946962209639112735/UpdatedSoccerRobotRENDER.png?width=200&height=270)
