@@ -26,7 +26,8 @@ HasBall -- Yes --> Attack((Attack))
 Attack --> AimGoal(Curve towards opponent Goal) --> RampSpeed(Ramp Speed Up)
 CheckSensors --> BallPos[Ball Position?]
 BallPos-- Not Found --> Defend
-BallPos-- Found --> GoToBall(Go Towards Ball)
+BallPos-- Found --> Neutral((Neutral)) --> NeutralSpeed(Neutral Speed) --> GoToBall(Go Towards Ball)
+Attacking[Attacking?] -- No --> Aim(Aim at '0' degrees)
 ```
 ### **Robot Design:**
 Our design choices for this competition were to use 2 identical robots with 4 EV3 Large Motors, 2 I2C IR Sensors, 1 I2C Compass Sensor and an EV3 Ultrasonic Sensor. We decided that the identity between robots would help resolve issues and keep code as similar as possible. 
