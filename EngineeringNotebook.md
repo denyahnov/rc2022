@@ -13,7 +13,7 @@ Our strategy for this competition was to try hold ball possession for as long as
 ![Soccer Field](https://user-images.githubusercontent.com/60083582/185514513-ba5dd76e-ddfc-4a0a-9a91-03beb1630f51.png)
 
 **Building:**
-Our Robots were designed for durability and power rather than extreme speed. Based on previous competitions, we found that robots able to overpower the other team could gain ball possession far more than a lightweight but fast robot. The choice to use EV3 Large Motors for our drivebase was a result of this consideration, as we found that the heavier and larger motors produce more power than the smaller EV3 Medium Motors which are favorable for many teams. Here are some of the [prototypes](EngineeringNotebook.md### **Photos:**).
+Our Robots were designed for durability and power rather than extreme speed. Based on previous competitions, we found that robots able to overpower the other team could gain ball possession far more than a lightweight but fast robot. The choice to use EV3 Large Motors for our drivebase was a result of this consideration, as we found that the heavier and larger motors produce more power than the smaller EV3 Medium Motors which are favorable for many teams. Here are some of the [prototypes](https://github.com/denyahnov/rc2022/blob/main/EngineeringNotebook.md#photos).
 
 **Robot Logic:**
 ```mermaid
