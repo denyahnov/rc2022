@@ -8,12 +8,12 @@ We are Dennis and Riveen, a group of year 9s from Melbourne High School. We are 
 
 ### **Strategy:**
 **Game:**
-Our strategy for this competition was to try hold ball possession for as long as possible throughout the matches. We found that...
+Our strategy for this competition was to try hold ball possession for as long as possible throughout the matches. We found that... We chose to run 2 Offense robots, opting out of using a designated 'goalie'. This was partly due to the previously stated decision, but also because we chose to use inter-robot communication. The ability for the robots to relay information like ball possession would allow them to play defense/offense completely autonomously, without the need of specific roles.
 
 ![Soccer Field](https://user-images.githubusercontent.com/60083582/185514513-ba5dd76e-ddfc-4a0a-9a91-03beb1630f51.png)
 
 **Building:**
-Our Robots were designed for durability and power rather than extreme speed. Based on previous competitions, we found that robots able to overpower the other team could gain ball possession far more than a lightweight but fast robot. The choice to use EV3 Large Motors for our drivebase was a result of this consideration, as we found that the heavier and larger motors produce more power than the smaller EV3 Medium Motors which are favorable for many teams.
+Our Robots were designed for durability and power rather than extreme speed. Based on previous competitions, we found that robots able to overpower the other team could gain ball possession far more than a lightweight but fast robot. The choice to use EV3 Large Motors for our drivebase was a result of this consideration, as we found that the heavier and larger motors produce more power than the smaller EV3 Medium Motors which are favorable for many teams. Here are some of the [prototypes](EngineeringNotebook.md### **Photos:**).
 
 **Robot Logic:**
 ```mermaid
