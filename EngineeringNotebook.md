@@ -1,4 +1,4 @@
-# Monkey Madness 
+# Monkey Madness
 ## Soccer Standard - *2022 RoboCup Junior Australia*
 ![MonkeyMadnessSmall](https://user-images.githubusercontent.com/60083582/185514677-70e94f78-bb10-4946-b1b8-a40c2645fdb7.png)
 
