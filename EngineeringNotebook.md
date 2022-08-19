@@ -2,6 +2,17 @@
 ## Soccer Standard - *2022 RoboCup Junior Australia*
 ![MonkeyMadnessSmall](https://user-images.githubusercontent.com/60083582/185514677-70e94f78-bb10-4946-b1b8-a40c2645fdb7.png)
 
+### **Contents:**
+- [Introduction](https://github.com/denyahnov/rc2022/blob/main/EngineeringNotebook.md#introduction)
+- [Strategy](https://github.com/denyahnov/rc2022/blob/main/EngineeringNotebook.md#strategy)
+	- Game
+	- Building
+	- Robot Logic
+- [Robot Design](https://github.com/denyahnov/rc2022/blob/main/EngineeringNotebook.md#robot-design)
+- [Robot Code](https://github.com/denyahnov/rc2022/blob/main/EngineeringNotebook.md#robot-code)
+- [Photos](https://github.com/denyahnov/rc2022/blob/main/EngineeringNotebook.md#photos)
+	- Prototypes
+
 ### **Introduction:**
 
 We are Dennis and Riveen, a group of year 9s from Melbourne High School. We are a small team of 2 and operate on a weekly basis. We have a variety of experience in various robotics competitions and have competed in RoboCup before, although this is the first time we are using [python](https://www.python.org/) for robotics.
