@@ -50,9 +50,9 @@ Our design choices for this competition were to use 2 identical robots with 4 EV
 
 Because of the limited time working on the robot in person, we began testing out with [different robot designs](https://github.com/denyahnov/rc2022/blob/main/EngineeringNotebook.md#photos) using parts from home or [Studio 2.0](https://www.bricklink.com/v2/build/studio.page), a virtual LEGO builder.
 
-We use 4 motors with omniwheels positioned around the robot to form an X-drive, which allows the robot to move in 8 directions rather than 2. The omniwheels we use for these are completely legal as they are built from LEGO pieces
+We use 4 motors with omniwheels positioned around the robot to form an X-drive, which allows the robot to move in 8 directions rather than 2. We use omniwheels that are completely legal since they are built from LEGO pieces
 
-We decided to use 2 Infrared Sensors position opposite each other to provide 360 degree coverage around the robot, meaning we would not need to spin around to find the ball if it is not detected. We use the compass for reading our angle which is used in straightening ourselves as well as curving at the opponent goal. We use an  Utrasonic positioned on the side of our robots to read our position on the field horizontally. This helps the robot figure out where it is on the field at all times.
+We decided to use 2 Infrared Sensors position opposite each other to provide 360 degree coverage around the robot, meaning we would not need to spin around to find the ball if it is not detected. We use the compass for reading our angle which is used in straightening ourselves as well as curving at the opponent goal. We use an  Ultrasonic positioned on the side of our robots to read our position on the field horizontally. This helps the robot figure out where it is on the field at all times.
 
 | **Motor**         |  **Pros**                     |  **Cons**                           |
 |------------------ | ----------------------------- | ------------------------------------|
@@ -62,9 +62,9 @@ We decided to use 2 Infrared Sensors position opposite each other to provide 360
 ### **Robot Code:**
 Our robots are coded in [Python](https://www.python.org/) language using the [ev3dev](https://www.ev3dev.org/) library. All our code is publicly available on our [GitHub repository](https://github.com/denyahnov/rc2022/). 
 
-We run the main chunk of our code in a single main loop, which uses utilities and functions from other files. We use a seperate thread for bluetooth communication, allowing for it to run simultaneousy with the main run. We started off by using [EV3Sim](https://ev3sim.mhsrobotics.club/), an application developed by the school to practice coding in a virtual environment. It helped us build the foundation of our code while working from home.
+We run the main chunk of our code in a single main loop, which uses utilities and functions from other files. We use a seperate thread for bluetooth communication, allowing for it to run simultaneousy with the main code. We started off by using [EV3Sim](https://ev3sim.mhsrobotics.club/), an application developed by the school to practice coding in a virtual environment. It helped us build the foundation of our code while working from home.
 
-Our code accounts for robot inconsistency and faulty sensors. The main chunk of logic stays the same but small functions like converting ball position to robot direction has configurable variables that shift between robots. We also average ultrasonic sensor values over the past __ readings, excluding any extremely rapid increases/decreases in value as to account for objects blocking the ultrasonic.
+Our code accounts for robot inconsistency and faulty sensors. The main chunk of logic stays the same but small functions like converting ball position to robot direction has configurable variables that shift between robots. We also average out ultrasonic sensor values over the past __ readings, excluding any extremely rapid increases/decreases in value as to account for objects blocking the ultrasonic.
 
 We use bluetooth for communication between robots. We have one robot run as a server and the other connects afterwards as a client. The robots relay whatever information they recieve between themselves e.g. Ball Possession, Current Attack/Defense State, etc.
 
