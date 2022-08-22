@@ -70,6 +70,23 @@ We use bluetooth for communication between robots. We have one robot run as a se
 
 We do not use any sensors like touch or colour to detect if the robot has possession of the ball, instead we use the infrared proximity which is a neat feature.
 
+```mermaid
+graph LR
+input[Sensor Input] -- Infrared --> IrInput(Return value from 0-11)
+input -- Compass --> cInput[Compass value?]
+cInput -- 3-179 --> left(Curve left)
+cInput -- 180-356 --> right(Curve Right)
+cInput -- Else --> straight(Do nothing)
+right --> formula(Curve speed = angle from '0')
+left --> formula
+input -- Ultrasonic --> question[Greater than 10cm change from average of previous values?]
+question -- Yes --> dont(Do nothing)
+question -- No --> do(Append value to previous values)
+do --> remove(Remove last value in array)
+dont --> returnUltrasonic(Return array)
+remove--> returnUltrasonic
+```
+
 ![IrSensorValues](https://user-images.githubusercontent.com/60083582/185833817-af29420e-4e08-4fae-9abd-7d05557f1ff4.png)
 
 Infrared Value Conversion
