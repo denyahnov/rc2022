@@ -88,8 +88,9 @@ remove--> returnUltrasonic
 ```
 
 ![IrSensorValues](https://user-images.githubusercontent.com/60083582/185833817-af29420e-4e08-4fae-9abd-7d05557f1ff4.png)
+![CompassValue](https://user-images.githubusercontent.com/60083582/186033284-3bef35e7-2be7-4249-83a1-fac46f4491df.png)
 
-Infrared Value Conversion
+Infrared Value Conversion		Compass Value
 
 ### **Photos:**
 **Prototypes:**
