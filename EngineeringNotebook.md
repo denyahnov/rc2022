@@ -71,6 +71,7 @@ We use bluetooth for communication between robots. We have one robot run as a se
 We do not use any sensors like touch or colour to detect if the robot has possession of the ball, instead we use the infrared proximity which is a neat feature.
 
 ![IrSensorValues](https://user-images.githubusercontent.com/60083582/185833817-af29420e-4e08-4fae-9abd-7d05557f1ff4.png)
+
 Infrared Value Conversion
 
 ### **Photos:**
