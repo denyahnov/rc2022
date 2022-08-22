@@ -52,7 +52,7 @@ Because of the limited time working on the robot in person, we began testing out
 
 We use 4 motors with omniwheels positioned around the robot to form an X-drive, which allows the robot to move in 8 directions rather than 2. We use omniwheels that are completely legal since they are built from LEGO pieces
 
-We decided to use 2 Infrared Sensors position opposite each other to provide 360 degree coverage around the robot, meaning we would not need to spin around to find the ball if it is not detected. We use the compass for reading our angle which is used in straightening ourselves as well as curving at the opponent goal. We use an  Ultrasonic positioned on the side of our robots to read our position on the field horizontally. This helps the robot figure out where it is on the field at all times.
+We decided to use 2 Infrared sensors positioned opposite each other to provide 360 degree coverage around the robot, meaning we would not need to spin around to find the ball if it is not detected. We use the compass for reading our angle which is used in straightening ourselves as well as curving at the opponent goal. We use an  Ultrasonic positioned on the side of our robots to read our position on the field horizontally. This helps the robot figure out where it is on the field at all times.
 
 | **Motor**         |  **Pros**                     |  **Cons**                           |
 |------------------ | ----------------------------- | ------------------------------------|
@@ -69,6 +69,9 @@ Our code accounts for robot inconsistency and faulty sensors. The main chunk of 
 We use bluetooth for communication between robots. We have one robot run as a server and the other connects afterwards as a client. The robots relay whatever information they recieve between themselves e.g. Ball Possession, Current Attack/Defense State, etc.
 
 We do not use any sensors like touch or colour to detect if the robot has possession of the ball, instead we use the infrared proximity which is a neat feature.
+
+![IrSensorValues](https://user-images.githubusercontent.com/60083582/185833817-af29420e-4e08-4fae-9abd-7d05557f1ff4.png)
+Infrared Value Conversion
 
 ### **Photos:**
 **Prototypes:**
