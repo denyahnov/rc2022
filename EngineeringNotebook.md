@@ -64,7 +64,7 @@ Our robots are coded in [Python](https://www.python.org/) language using the [ev
 
 We run the main chunk of our code in a single main loop, which uses utilities and functions from other files. We use a seperate thread for bluetooth communication, allowing for it to run simultaneousy with the main code. We started off by using [EV3Sim](https://ev3sim.mhsrobotics.club/), an application developed by the school to practice coding in a virtual environment. It helped us build the foundation of our code while working from home.
 
-Our code accounts for robot inconsistency and faulty sensors. The main chunk of logic stays the same but small functions like converting ball position to robot direction has configurable variables that shift between robots. We also average out ultrasonic sensor values over the past __ readings, excluding any extremely rapid increases/decreases in value as to account for objects blocking the ultrasonic.
+Our code accounts for robot inconsistency and faulty sensors. The main chunk of logic stays the same but small functions like converting ball position to robot direction has configurable variables that shift between robots. We also average out ultrasonic sensor values over the past 20 readings, excluding any extremely rapid increases/decreases in value as to account for objects blocking the ultrasonic.
 
 We use bluetooth for communication between robots. We have one robot run as a server and the other connects afterwards as a client. The robots relay whatever information they recieve between themselves e.g. Ball Possession, Current Attack/Defense State, etc.
 
@@ -79,18 +79,16 @@ cInput -- 180-356 --> right(Curve Right)
 cInput -- Else --> straight(Do nothing)
 right --> formula(Curve speed = angle from '0')
 left --> formula
-input -- Ultrasonic --> question[Greater than 10cm change from average of previous values?]
+input -- Ultrasonic --> question[Greater than 20cm change from average of previous values?]
 question -- Yes --> dont(Do nothing)
 question -- No --> do(Append value to previous values)
-do --> remove(Remove last value in array)
-dont --> returnUltrasonic(Return array)
+do --> remove(Remove last value in list)
+dont --> returnUltrasonic(Return list)
 remove--> returnUltrasonic
 ```
 
 ![IrSensorValues](https://user-images.githubusercontent.com/60083582/185833817-af29420e-4e08-4fae-9abd-7d05557f1ff4.png)
 ![CompassValue](https://user-images.githubusercontent.com/60083582/186033284-3bef35e7-2be7-4249-83a1-fac46f4491df.png)
-
-Infrared Value Conversion		Compass Value
 
 ### **Photos:**
 **Prototypes:**
