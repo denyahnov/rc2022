@@ -50,6 +50,8 @@ speed=60
 slowspeed=30
 sp=speed
 goal=compass.value()
+ultrasonic_values=[]
+outliers=0
 
 # COMM STATES:
 # -1 : Offline
@@ -80,19 +82,6 @@ class comms():
         while self.enabled:
             self.client.send(str(self.state))
             self.teammate = int(self.client.recv(1024))
-
-class ultrasonicThread():
-    distance=ultrasonic.value()
-    running=True
-    def ulthread():
-        try:
-            print("Running Thread")
-            while ultrasonicThread.running:
-                ultrasonicThread.distance=ultrasonic.value()
-                sleep(0.2)
-            print("Ended Thread")
-        except:
-            print("Thread Error")
         
 # Coast Motors
 def coast():
@@ -100,10 +89,6 @@ def coast():
     bottomRight.off(brake=False)
     topLeft.off(brake=False)
     bottomLeft.off(brake=False)
-    
-# Start Thread
-#thread = Thread(target=ultrasonicThread.ulthread)
-#thread.start()
 
 #if comms.Begin(comms) != 0: comms.state=0 # Begin Bluetooth Comms
 leds.set_color('LEFT', 'AMBER')
@@ -127,36 +112,46 @@ try:
         if buttons.backspace or buttons.left:
             break
         if paused: continue
-        fp=iF.value(0) # Front Pos
-        bp=iB.value(0) # Back Pos
-        fs=[iF.value(1),iF.value(2),iF.value(3),iF.value(4),iF.value(5)] # Front Strength
-        bs=[iB.value(1),iB.value(2),iB.value(3),iB.value(4),iB.value(5)] # Back Strength
-        ang=getAngle(compass.value(),goal) # Compass Angle
-        try: dist=ultrasonic.value() # Ultrasonic Distance
-        except: dist=0 # Cant Get Distance
-        stalled=topLeft.is_stalled
-        usBlocked=robotNotBlocking(dist,ultrasonicThread.distance) # Ultrasonic Blocked by Object
 
-        x=irToPos(fp,bp,fs,bs)
+        fp = iF.value(0) # Front Pos
+        bp = iB.value(0) # Back Pos
 
-        position=x[0] # Ball Position
-        strength=x[1] # Ball Strength
+        fs = [iF.value(1),iF.value(2),iF.value(3),iF.value(4),iF.value(5)] # Front Strength
+        bs = [iB.value(1),iB.value(2),iB.value(3),iB.value(4),iB.value(5)] # Back Strength
+
+        ang = getAngle(compass.value(),goal) # Compass Angle
+
+        try: 
+            ultrasonic_values, outliers = ultrasonicValue(ultrasonic.value(),ultrasonic_values,outliers) # Get Average Ultrasonic Values
+            dist = sum(ultrasonic_values)/len(ultrasonic_values)
+        except: 
+            dist = 0 # Cant Get Distance
+
+        stalled = topLeft.is_stalled
+
+        x = irToPos(fp,bp,fs,bs)
+
+        position = x[0] # Ball Position
+        strength = x[1] # Ball Strength
         
         #if comms.teammate == 1: comms.state=2; position=-1
-        direction=moveBall(position,strength,dist,fieldWidth,False,2) # Decide Motor Direction
-        drift=pointForward(ang,speed) # Point 'North'
+        direction = moveBall(position,strength,dist,fieldWidth,False,2) # Decide Motor Direction
+
+        drift = pointForward(ang,speed) # Point 'North'
+
         if 129 < iF.value(3): 
-            #sound.play_tone(520,0.5,0,20,sound.PLAY_NO_WAIT_FOR_COMPLETE)
-            cv=curve(dist,fieldWidth,topspeed) # Curve Towards Goal
+            cv = curve(dist,fieldWidth,topspeed) # Curve Towards Goal
             if sp < topspeed: sp*=1.03
             if sp > topspeed: sp=topspeed
         else:
-            cv=0
+            cv = 0
             if sp > speed: sp*=0.99
             if sp < speed: sp=speed
-        if direction == 0: direction=center(dist,fieldWidth); sp=slowspeed
+
+        if direction == 0: 
+            direction=center(dist,fieldWidth); sp=slowspeed
+
         if cv != 0: drift=0
-        #if drift < 0: sp+=5
         
         f=motorDirection(direction)
         
@@ -176,14 +171,10 @@ except Exception:
     print_exc()
     coast() # Stop Motors
     sleep(1)
-    ultrasonicThread.running = False # Kill Thread
-    sleep(1)
 except:
     print("Interrupted")
     coast() # Stop Motors
     sleep(1)
 print("Ended")
 coast() # Stop Motors
-sleep(1)
-ultrasonicThread.running = False # Kill Thread
 sleep(1)
