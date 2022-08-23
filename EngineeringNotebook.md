@@ -79,7 +79,7 @@ cInput -- 180-356 --> right(Curve Right)
 cInput -- Else --> straight(Do nothing)
 right --> formula(Curve speed = angle from '0')
 left --> formula
-input -- Ultrasonic --> question[Greater than 10cm change from average of previous values?]
+input -- Ultrasonic --> question[Greater than 20cm change from average of previous values?]
 question -- Yes --> dont(Do nothing)
 question -- No --> do(Append value to previous values)
 do --> remove(Remove last value in list)
