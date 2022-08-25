@@ -182,7 +182,7 @@ def ultrasonicValue(value,values,outliers):
     change_needed = 200
     change = abs(average - value)
 
-    if outliers > 30: # If Ultrasonic has too many outliers, reset
+    if outliers > 40: # If Ultrasonic has too many outliers, reset
         values = [value]
 
     if change < change_needed: # Value is not too great of change
