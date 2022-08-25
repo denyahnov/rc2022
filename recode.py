@@ -123,9 +123,12 @@ try:
 
         try: 
             ultrasonic_values, outliers = ultrasonicValue(ultrasonic.value(),ultrasonic_values,outliers) # Get Average Ultrasonic Values
-            dist = sum(ultrasonic_values)/len(ultrasonic_values)
-        except: 
+            dist = sum(ultrasonic_values) / len(ultrasonic_values)
+        except Exception: 
+            print_exc()
             dist = 0 # Cant Get Distance
+
+        print(str(ultrasonic.value()) + ' | ' + str(dist) + ' | ' + str(outliers) + '                ',end='\r')
 
         stalled = topLeft.is_stalled
 

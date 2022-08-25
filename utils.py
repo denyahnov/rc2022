@@ -175,17 +175,19 @@ def commState(state,teammate,server):
 
 # Return Ultrasonic Values
 def ultrasonicValue(value,values,outliers):
+    if len(values) == 0: # List has no values
+        values.append(value) # Append Value
+
     average = sum(values) / len(values)
     change_needed = 200
     change = abs(average - value)
 
     if outliers > 30: # If Ultrasonic has too many outliers, reset
-        values = []
+        values = [value]
 
-    if len(values) == 0: # List has no values
+    if change < change_needed: # Value is not too great of change
         values.append(value) # Append Value
-    elif change > change_needed: # Value is not too great of change
-        values.append(value) # Append Value
+        outliers = 0
     else:
         outliers += 1 # Add Outlier
 
