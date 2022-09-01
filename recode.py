@@ -95,7 +95,7 @@ leds.set_color('LEFT', 'AMBER')
 leds.set_color('RIGHT', 'AMBER')
 sound.set_volume(20)
 sound.play_tone(650,0.3,0,20,sound.PLAY_NO_WAIT_FOR_COMPLETE)
-print("Battery:",battery.measured_volts)
+print("Battery:",round(battery.measured_volts,2))
 
 try:
     while not buttons.right: sleep(0.05)
