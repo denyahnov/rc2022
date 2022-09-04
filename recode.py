@@ -1,24 +1,5 @@
 #!/usr/bin/env python3
 
-# Import ev3dev2
-from ev3dev2.button import *
-from ev3dev2.console import *
-from ev3dev2.motor import *
-from ev3dev2.sensor import *
-from ev3dev2.sensor.lego import *
-from ev3dev2.led import *
-from ev3dev2.sound import *
-from ev3dev2.power import *
-print("ev3dev2 Imported")
-
-# Other Imports
-from traceback import print_exc
-from comms import *
-from utils import *
-from threading import Thread
-from time import sleep
-print("utils Imported")
-
 # COMM STATES:
 # -1 : Offline
 #  0 : Idle
@@ -34,12 +15,20 @@ class comms:
     enabled = True
     server = False
     def Begin(self,robot_num):
+        print('started')
+
+        from comms_import import CommServer, CommClient
+        from traceback import print_exc
+
+        print('robotnum',robot_num)
+
         if robot_num == 0:
             try:
                 self.client = CommClient(self.address,self.port)
                 self.server = False
                 return 1
             except:
+                print_exc()
                 server = CommServer(self.address,self.port)
                 self.client = server.accept_client()
                 self.server = True
@@ -51,6 +40,7 @@ class comms:
                 self.server = True
                 return 2       
             except:
+                print_exc()
                 self.client = CommClient(self.address,self.port)
                 self.server = False
                 return 1                
@@ -61,6 +51,25 @@ class comms:
             self.teammate = int(self.client.recv(1024))
 
 if __name__ == "__main__":
+    # Import ev3dev2
+    from ev3dev2.button import *
+    from ev3dev2.console import *
+    from ev3dev2.motor import *
+    from ev3dev2.sensor import *
+    from ev3dev2.sensor.lego import *
+    from ev3dev2.led import *
+    from ev3dev2.sound import *
+    from ev3dev2.power import *
+    print("ev3dev2 Imported")
+
+    # Other Imports
+    from traceback import print_exc
+    from comms_import import *
+    from utils import *
+    from threading import Thread
+    from time import sleep
+    print("utils Imported")
+
     # Initialize Motors
     topLeft = LargeMotor(OUTPUT_C)
     topRight = LargeMotor(OUTPUT_A)

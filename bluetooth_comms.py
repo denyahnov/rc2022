@@ -59,7 +59,6 @@ outliers=0
 #  1 : Attacking
 #  2 : Defending
 
-from comms import *
 from recode import comms
         
 # Coast Motors
