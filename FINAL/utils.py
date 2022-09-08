@@ -178,7 +178,7 @@ def ultrasonicValue(value,values,outliers):
         values.append(value) # Append Value
 
     average = sum(values) / len(values)
-    change_needed = 200
+    change_needed = 20
     change = abs(average - value)
 
     if outliers > 22: # If Ultrasonic has too many outliers, reset

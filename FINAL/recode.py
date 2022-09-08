@@ -100,12 +100,12 @@ if __name__ == "__main__":
     paused = True
 
     # Variables
-    fieldWidth=(80)/2 # Min [650-700], Max [1000]
     topspeed=90
     speed=85
     slowspeed=40
     sp=speed
     goal=compass.value()
+    fieldWidth=ultrasonic.distance_centimeters
     ultrasonic_values=[]
     outliers=0
             
@@ -154,7 +154,7 @@ if __name__ == "__main__":
                 print_exc()
                 dist = 0 # Cant Get Distance
 
-            print(str(ultrasonic.distance_centimeters) + ' | ' + str(dist) + ' | ' + str(outliers) + '                ',end='\r')
+            #print(str(ultrasonic.distance_centimeters) + ' | ' + str(dist) + ' | ' + str(outliers) + '                ',end='\r')
 
             stalled = topLeft.is_stalled
 
