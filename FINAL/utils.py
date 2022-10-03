@@ -105,42 +105,29 @@ def irToPos(fp,bp,fs,bs):
         return -1,-1
 
 # Convert IR position to Motor Direction
-def moveBall(pos,strength,dist,fieldWidth,curving,robot_num=1):
-    if robot_num == 1:
-        if pos == 0: return 2
-        if pos == 1: return 3
-        if pos == 2: return 5
-        if pos == 3: return 6
-        if pos == 4: return 6
-        if pos == 5: return 6
-        if pos == 6:
-            if getPos(dist,fieldWidth) == 1:
-                return 4
-            else:
-                return 8
-        if pos == 7: return 6
-        if pos == 8: return 6
-        if pos == 9: return 6
-        if pos == 10: return 7
-        if pos == 11: return 1
-    elif robot_num == 2:
-        if pos == 0: return 2
-        if pos == 1: return 3
-        if pos == 2: return 5
-        if pos == 3: return 6
-        if pos == 4: return 6
-        if pos == 5: return 6
-        if pos == 6:
-            if getPos(dist,fieldWidth) == 1:
-                return 4
-            else:
-                return 8
-        if pos == 7: return 6
-        if pos == 8: return 6
-        if pos == 9: return 7
-        if pos == 10: return 7
-        if pos == 11: return 1
-    return 0
+def moveBall(pos,strength,dist,fieldWidth,curving):
+    if pos == 0: return 2
+    if pos == 1: return 3
+    if pos == 2: 
+        if strength > 90:
+            return 5
+        return 4
+    if pos == 3: return 6
+    if pos == 4: return 6
+    if pos == 5: return 6
+    if pos == 6:
+        if getPos(dist,fieldWidth) == 1:
+            return 4
+        else:
+            return 8
+    if pos == 7: return 6
+    if pos == 8: return 6
+    if pos == 9: return 6
+    if pos == 10: 
+        if strength > 90:
+            return 7
+        return 8
+    if pos == 11: return 1
 
 # Curve towards Goal
 def curve(dist,field,speed):

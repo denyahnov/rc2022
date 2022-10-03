@@ -124,17 +124,24 @@ if __name__ == "__main__":
     print("Battery:",round(battery.measured_volts,2))
 
     try:
-        while not buttons.right: sleep(0.05)
-        while buttons.right: sleep(0.05)
+        while not buttons.up: sleep(0.05)
+        while buttons.up: sleep(0.05)
         leds.set_color('LEFT', 'GREEN')
         leds.set_color('RIGHT', 'GREEN')
         while True:
-            if buttons.right:
+            if buttons.up:
                 coast()
                 paused = not paused
                 sound.play_tone(450,0.3,0,20,sound.PLAY_NO_WAIT_FOR_COMPLETE) if paused else sound.play_tone(650,0.3,0,20,sound.PLAY_NO_WAIT_FOR_COMPLETE)
-                while buttons.right:
+                while buttons.up:
                     sleep(0.05)
+                if paused: 
+                    leds.set_color('LEFT', 'AMBER')
+                    leds.set_color('RIGHT', 'AMBER')
+                    sleep(1)
+                else:
+                    leds.set_color('LEFT', 'GREEN')
+                    leds.set_color('RIGHT', 'GREEN')
             if buttons.backspace or buttons.left:
                 break
             if paused: continue
@@ -164,7 +171,7 @@ if __name__ == "__main__":
             strength = x[1] # Ball Strength
             
             #if comms.teammate == 1: comms.state=2; position=-1
-            direction = moveBall(position,strength,dist,fieldWidth,False,2) # Decide Motor Direction
+            direction = moveBall(position,strength,dist,fieldWidth,False) # Decide Motor Direction
 
             drift = pointForward(ang,speed) # Point 'North'
 
@@ -206,4 +213,6 @@ if __name__ == "__main__":
         sleep(1)
     print("Ended")
     coast() # Stop Motors
+    leds.set_color('LEFT', 'GREEN')
+    leds.set_color('RIGHT', 'GREEN')  
     sleep(1)
